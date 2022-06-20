@@ -2,6 +2,8 @@ package com.practice.shop.services.exception.handler;
 
 import com.practice.shop.services.exception.EntityAlreadyExistsException;
 import com.practice.shop.services.exception.UserHasNoRolesException;
+import com.practice.shop.services.exception.UserNotFoundedException;
+import com.practice.shop.services.exception.WrongPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,28 +12,32 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @EnableWebSecurity
 @RestControllerAdvice
     public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Map<String, String> handleEntityAlreadyExistsException(EntityAlreadyExistsException ex, WebRequest request) {
-       Map<String, String> error = new HashMap<>();
-       error.put("msg", ex.getMessage());
-        return error;
+    public ErrorTransfer handleCustomException(RuntimeException ex, WebRequest request) {
+        return new ErrorTransfer(ex.getMessage());
     }
 
-    @ExceptionHandler(UserHasNoRolesException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserNotFoundedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public Map<String, String> handleUserHasNoRolesException(UserHasNoRolesException ex, WebRequest request) {
-        Map<String, String> error = new HashMap<>();
-        error.put("msg", ex.getMessage());
-        return error;
+    public ErrorTransfer handleUserNotFoundException(UserNotFoundedException ex, WebRequest request) {
+        return new ErrorTransfer(ex.getMessage());
     }
+
+    @ExceptionHandler(WrongPasswordException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorTransfer handleWrongPasswordException(WrongPasswordException ex, WebRequest request) {
+        return new ErrorTransfer(ex.getMessage());
+    }
+
+
+
 }
