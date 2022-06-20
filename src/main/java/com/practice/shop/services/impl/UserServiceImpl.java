@@ -4,6 +4,8 @@ import com.practice.shop.DAO.UserHasRoleRepository;
 import com.practice.shop.DAO.UserRepository;
 import com.practice.shop.DTO.UserDto;
 import com.practice.shop.services.exception.UserHasNoRolesException;
+import com.practice.shop.services.exception.UserNotFoundedException;
+import com.practice.shop.services.exception.WrongPasswordException;
 import com.practice.shop.services.mappers.UserDtoMapper;
 import com.practice.shop.models.User;
 import com.practice.shop.models.UserActiveRole;
@@ -38,6 +40,20 @@ public class UserServiceImpl implements UserService {
         saveUserRoles(user, newUser.getId());
 
         return userDtoMapper.toDTO(newUser);
+    }
+
+    @Override
+    public UserDto login(UserDto user) {
+        User foundUser = userRepository.findUserByEmail(user.getEmail());
+        if (foundUser == null){
+            throw new UserNotFoundedException(user.getEmail());
+        }
+        if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
+            return userDtoMapper.toDTO(foundUser);
+        }
+        else {
+            throw new WrongPasswordException(user.getEmail());
+        }
     }
 
 

@@ -27,6 +27,11 @@ public class UserController {
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto user) {
+        return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
