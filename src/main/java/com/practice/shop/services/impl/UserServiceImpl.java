@@ -3,6 +3,7 @@ package com.practice.shop.services.impl;
 import com.practice.shop.DAO.UserHasRoleRepository;
 import com.practice.shop.DAO.UserRepository;
 import com.practice.shop.DTO.UserDto;
+import com.practice.shop.controllers.security.filter.JwtRepository;
 import com.practice.shop.services.exception.UserHasNoRolesException;
 import com.practice.shop.services.exception.UserNotFoundedException;
 import com.practice.shop.services.exception.WrongPasswordException;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserHasRoleRepository userHasRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserDtoMapper userDtoMapper;
+    private final JwtRepository jwtRepository;
 
     @Override
     @Transactional
@@ -53,6 +55,16 @@ public class UserServiceImpl implements UserService {
         }
         else {
             throw new WrongPasswordException(user.getEmail());
+        }
+    }
+
+    @Override
+    public UserDto findByEmail(String email) {
+        User foundUser = userRepository.findUserByEmail(email);
+        if (foundUser == null){
+            throw new UserNotFoundedException(email);
+        }else {
+            return userDtoMapper.toDTO(foundUser);
         }
     }
 

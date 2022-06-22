@@ -1,7 +1,6 @@
 package com.practice.shop.services;
 
 import com.practice.shop.DTO.UserDto;
-import com.practice.shop.models.User;
 
 public interface UserService {
 
@@ -9,4 +8,5 @@ public interface UserService {
 
     UserDto login(UserDto user);
 
-}
+    public UserDto findByEmail(String email);
+    }
