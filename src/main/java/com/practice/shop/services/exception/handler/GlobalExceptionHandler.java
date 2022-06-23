@@ -2,7 +2,7 @@ package com.practice.shop.services.exception.handler;
 
 import com.practice.shop.services.exception.EntityAlreadyExistsException;
 import com.practice.shop.services.exception.UserHasNoRolesException;
-import com.practice.shop.services.exception.UserNotFoundedException;
+import com.practice.shop.services.exception.UserNotFoundException;
 import com.practice.shop.services.exception.WrongPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,10 +24,10 @@ import org.springframework.web.context.request.WebRequest;
         return new ErrorTransfer(ex.getMessage());
     }
 
-    @ExceptionHandler(UserNotFoundedException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorTransfer handleUserNotFoundException(UserNotFoundedException ex, WebRequest request) {
+    public ErrorTransfer handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
         return new ErrorTransfer(ex.getMessage());
     }
 

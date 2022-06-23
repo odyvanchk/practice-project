@@ -9,9 +9,6 @@ import java.util.Collection;
 @Data
 public class CustomUserDetails implements UserDetails {
 
-    public static final String STUDENT = "STUDENT";
-    public static final String TEACHER = "TEACHER";
-
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;

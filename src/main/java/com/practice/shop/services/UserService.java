@@ -6,7 +6,7 @@ public interface UserService {
 
     UserDto registerUser(UserDto user);
 
-    UserDto login(UserDto user);
+    String login(UserDto user);
 
     public UserDto findByEmail(String email);
     }

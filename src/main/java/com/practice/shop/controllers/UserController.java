@@ -1,11 +1,11 @@
 package com.practice.shop.controllers;
 
 import com.practice.shop.DTO.UserDto;
-import com.practice.shop.models.User;
 import com.practice.shop.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +21,27 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("permitAll()")
     @CrossOrigin
     @PostMapping("/registration")
     public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto user) {
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto user) {
-        return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
+    @PreAuthorize("permitAll()")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/auth")
+    public Map<String,String> loginUser(@RequestBody UserDto user) {
+        HashMap<String, String> response = new HashMap<>();
+        response.put("token", userService.login(user));
+        return response;
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping("/lessons/book")
+    public String d(){
+        return "hello, STUDENT";
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
