@@ -5,8 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 
-
-@SpringBootApplication()
+@SpringBootApplication
 public class ShopApplication {
 
     public static void main(String[] args) {

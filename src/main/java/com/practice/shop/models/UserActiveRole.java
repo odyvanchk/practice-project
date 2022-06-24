@@ -2,7 +2,6 @@ package com.practice.shop.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -27,7 +26,6 @@ public class UserActiveRole {
 
     @Data
     @NoArgsConstructor
-    @EqualsAndHashCode
     @AllArgsConstructor
     public static class UserRoleId implements Serializable {
 
