@@ -9,7 +9,7 @@ import com.practice.shop.models.UserRole;
 import com.practice.shop.services.UserService;
 import com.practice.shop.services.exception.EntityAlreadyExistsException;
 import com.practice.shop.services.exception.UserHasNoRolesException;
-import com.practice.shop.services.mappers.UserDtoMapper;
+import com.practice.shop.services.mappers.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserHasRoleRepository userHasRoleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserDtoMapper userDtoMapper;
 
     @Override
     @Transactional
@@ -34,10 +33,11 @@ public class UserServiceImpl implements UserService {
             throw new UserHasNoRolesException();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User newUser = userRepository.save(userDtoMapper.toEntity(user));
+        User newUser = userRepository.save(UserMapper.INSTANCE.userDtoToUser(user));
         saveUserRoles(user, newUser.getId());
 
-        return userDtoMapper.toDTO(newUser);
+        UserMapper.INSTANCE.updateUserDto(user, newUser);
+        return user;
     }
 
 
