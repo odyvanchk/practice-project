@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/english_lessons_course_project"
+    username: "root"
+    password: "1D4fkS"
+    driver-class-name: "org.postgresql.Driver"
+
+  jpa:
+    database: "postgresql"
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+
+  sql:
+    init:
+      mode: "embedded"
+      schema-locations: "classpath*:database/initDB.sql"
