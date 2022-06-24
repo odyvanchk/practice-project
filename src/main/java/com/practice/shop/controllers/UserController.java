@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserController {
 

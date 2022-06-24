@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -26,10 +25,10 @@ public class UserDto {
     @Pattern(regexp = ".+@.+\\.[a-zA-Z0-9]+", message = "email should contain @ and .")
     private String email;
 
-    @JsonProperty(value = "isTeacher")
+    @JsonProperty("isTeacher")
     private boolean isTeacher;
 
-    @JsonProperty(value = "isStudent")
+    @JsonProperty("isStudent")
     private boolean isStudent;
 
     public UserDto(String password, String login, String email, boolean isTeacher, boolean isStudent) {
