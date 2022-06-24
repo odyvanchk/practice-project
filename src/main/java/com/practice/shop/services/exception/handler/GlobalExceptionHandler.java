@@ -32,7 +32,7 @@ import org.springframework.web.context.request.WebRequest;
     }
 
     @ExceptionHandler(WrongPasswordException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ErrorTransfer handleWrongPasswordException(WrongPasswordException ex, WebRequest request) {
         return new ErrorTransfer(ex.getMessage());

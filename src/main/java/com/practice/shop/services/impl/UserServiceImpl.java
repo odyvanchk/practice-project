@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -45,13 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(UserDto user) {
+    public Map<String, String> login(UserDto user) {
         User foundUser = userRepository.findUserByEmail(user.getEmail());
-        if (foundUser == null){
+        if (foundUser == null) {
             throw new UserNotFoundException(user.getEmail());
         }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            return jwtProvider.generateAccessToken(user.getEmail());
+            return jwtProvider.generateTokens(user.getEmail());
         }
         else {
             throw new WrongPasswordException(user.getEmail());
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByEmail(String email) {
         User foundUser = userRepository.findUserByEmail(email);
-        if (foundUser == null){
+        if (foundUser == null) {
             throw new UserNotFoundException(email);
         }else {
             return userDtoMapper.toDTO(foundUser);
