@@ -3,11 +3,12 @@ package com.practice.shop.services.impl;
 import com.practice.shop.DAO.UserHasRoleRepository;
 import com.practice.shop.DAO.UserRepository;
 import com.practice.shop.DTO.UserDto;
-import com.practice.shop.controllers.security.filter.JwtProvider;
+import com.practice.shop.controllers.security.jwt.AccessTokenService;
+import com.practice.shop.controllers.security.jwt.RefreshTokenService;
 import com.practice.shop.models.User;
 import com.practice.shop.models.UserActiveRole;
 import com.practice.shop.models.UserRole;
-import com.practice.shop.services.UserService;
+import com.practice.shop.services.AuthService;
 import com.practice.shop.services.exception.EntityAlreadyExistsException;
 import com.practice.shop.services.exception.UserHasNoRolesException;
 import com.practice.shop.services.exception.UserNotFoundException;
@@ -18,16 +19,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final UserHasRoleRepository userHasRoleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
+    private final AccessTokenService accessTokenService;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     @Transactional
@@ -53,7 +57,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(user.getEmail());
         }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            return jwtProvider.generateTokens(user.getEmail());
+           return getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
         }
         else {
             throw new WrongPasswordException(user.getEmail());
@@ -70,6 +74,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Map<String, String> loginWithRefreshToken(String token, String fingerprint) {
+        int userId = refreshTokenService.validateToken(token, fingerprint);
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return getAccessRefreshTokens(user.get().getEmail(), fingerprint, userId);
+    }
+
 
     private void saveUserRoles(UserDto user, Integer userId){
         if (user.isStudent()) {
@@ -78,5 +92,14 @@ public class UserServiceImpl implements UserService {
         if (user.isTeacher()) {
             userHasRoleRepository.save(new UserActiveRole(userId, UserRole.TEACHER.getRoleNumber()));
         }
+    }
+
+    private Map<String, String> getAccessRefreshTokens(String email, String fingerprint, int userId) {
+        Map<String, String> tokens = new HashMap<>(2);
+        String accessToken = accessTokenService.generateAccessTokenByEmail(email);
+        tokens.put("access", accessToken);
+        tokens.put("accessExpTime", accessTokenService.getExpirationTime(accessToken).toString());
+        tokens.put("refresh", refreshTokenService.generateAndSaveRefreshToken( fingerprint, userId).getToken());
+        return tokens;
     }
 }

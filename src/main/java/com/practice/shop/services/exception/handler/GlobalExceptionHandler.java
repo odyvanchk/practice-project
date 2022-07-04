@@ -1,9 +1,6 @@
 package com.practice.shop.services.exception.handler;
 
-import com.practice.shop.services.exception.EntityAlreadyExistsException;
-import com.practice.shop.services.exception.UserHasNoRolesException;
-import com.practice.shop.services.exception.UserNotFoundException;
-import com.practice.shop.services.exception.WrongPasswordException;
+import com.practice.shop.services.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.validation.FieldError;
@@ -13,9 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @EnableWebSecurity
 @RestControllerAdvice
@@ -47,13 +41,12 @@ import java.util.Map;
         return errors;
     }
 
-    @ExceptionHandler(WrongPasswordException.class)
+    @ExceptionHandler({WrongPasswordException.class, InvalidRefreshTokenException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public ErrorTransfer handleWrongPasswordException(WrongPasswordException ex, WebRequest request) {
+    public ErrorTransfer handleUnauthorizedException(Exception ex, WebRequest request) {
         return new ErrorTransfer(ex.getMessage());
     }
-
 
 
 }

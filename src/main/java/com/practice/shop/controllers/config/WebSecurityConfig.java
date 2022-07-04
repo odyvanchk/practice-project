@@ -1,9 +1,11 @@
 package com.practice.shop.controllers.config;
 
 
-import com.practice.shop.controllers.security.filter.JwtFilter;
+import com.practice.shop.controllers.security.ExceptionHandlerFilter;
+import com.practice.shop.controllers.security.jwt.JwtFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -11,6 +13,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 
 @Configuration
 @EnableWebSecurity
@@ -20,12 +30,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtFilter jwtFilter;
+    private ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().
+        http.cors().and().csrf().disable().
                 httpBasic().disable().
-                addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.cors();
+                sessionManagement().sessionCreationPolicy(STATELESS).
+                and().
+                addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).
+                addFilterBefore(exceptionHandlerFilter, JwtFilter.class);
+
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        source.registerCorsConfiguration("/**", corsConfiguration.applyPermitDefaultValues());
+        return source;
+    }
+
 }
+

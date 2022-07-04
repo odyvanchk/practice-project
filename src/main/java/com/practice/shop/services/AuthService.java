@@ -4,11 +4,13 @@ import com.practice.shop.DTO.UserDto;
 
 import java.util.Map;
 
-public interface UserService {
+public interface AuthService {
 
     UserDto registerUser(UserDto user);
 
     Map<String,String> login(UserDto user);
 
-    public UserDto findByEmail(String email);
-    }
+    UserDto findByEmail(String email);
+
+    Map<String, String> loginWithRefreshToken(String token, String fingerprint);
+}

@@ -1,4 +1,4 @@
-package com.practice.shop.controllers.security;
+package com.practice.shop.controllers.security.userdetails;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

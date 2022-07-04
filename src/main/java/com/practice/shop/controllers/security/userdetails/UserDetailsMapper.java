@@ -1,4 +1,4 @@
-package com.practice.shop.controllers.security;
+package com.practice.shop.controllers.security.userdetails;
 
 import com.practice.shop.DAO.UserHasRoleRepository;
 import com.practice.shop.DTO.UserDto;

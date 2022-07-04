@@ -1,4 +1,4 @@
-package com.practice.shop.controllers.security.filter;
+package com.practice.shop.controllers.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -10,21 +10,17 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @Component
-public class JwtProvider {
+public class AccessTokenService {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
     
-    @Value("${jwt.expiration-time}")
+    @Value("${jwt.expiration-time-access}")
     private int expTime;
 
-
-    public String generateAccessToken(String email) {
+    public String generateAccessTokenByEmail(String email) {
         Date date = Date.from(LocalDateTime.now().plusMinutes(expTime).atZone(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(email)
@@ -33,18 +29,15 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String generateRefreshToken() {
-        return UUID.randomUUID().toString();
-    }
 
-    public boolean validateToken(String token) {
-        try {
+    public boolean validateToken(String token) throws JwtException {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        } catch (JwtException expEx) {
-            System.out.println(expEx.getMessage());
-            return false;
-        }
+    }
+
+    public Long getExpirationTime(String token) {
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        return claims.getExpiration().getTime();
     }
 
     public String getEmailFromToken(String token) {
@@ -52,11 +45,4 @@ public class JwtProvider {
         return claims.getSubject();
     }
 
-    public Map<String, String> generateTokens(String email) {
-        Map<String, String> tokens = new HashMap<>(2);
-
-        tokens.put("accessToken", generateAccessToken(email));
-        tokens.put("refresh", generateRefreshToken());
-        return tokens;
-    }
 }
