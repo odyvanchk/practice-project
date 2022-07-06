@@ -1,6 +1,10 @@
 package com.practice.shop.services.exception.handler;
 
 import com.practice.shop.services.exception.*;
+import com.practice.shop.services.exception.user.EmailIsNotConfirmedException;
+import com.practice.shop.services.exception.user.EntityAlreadyExistsException;
+import com.practice.shop.services.exception.user.UserHasNoRolesException;
+import com.practice.shop.services.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.validation.FieldError;
@@ -15,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 @RestControllerAdvice
     public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class})
+    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class, EmailIsNotConfirmedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorTransfer handleCustomException(RuntimeException ex, WebRequest request) {

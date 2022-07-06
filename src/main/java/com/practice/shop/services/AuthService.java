@@ -10,7 +10,5 @@ public interface AuthService {
 
     Map<String,String> login(UserDto user);
 
-    UserDto findByEmail(String email);
-
     Map<String, String> loginWithRefreshToken(String token, String fingerprint);
 }

@@ -3,6 +3,8 @@ package com.practice.shop.controllers;
 import com.practice.shop.DTO.UserDto;
 import com.practice.shop.controllers.security.jwt.JwtResponse;
 import com.practice.shop.services.AuthService;
+import com.practice.shop.services.EmailService;
+import com.practice.shop.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
@@ -21,12 +24,16 @@ public class UserController {
 
     private final AuthService authService;
     private final JwtResponse jwtResponse;
+    private final UserService userService;
+    private final EmailService emailService;
 
 
     @PreAuthorize("permitAll()")
     @PostMapping("/registration")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto user) {
-        return new ResponseEntity<>(authService.registerUser(user), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto user) throws MessagingException {
+        UserDto userDto = authService.registerUser(user);
+        emailService.sendConfirmEmail(user.getEmail(),"confirm registration", "click");
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PreAuthorize("permitAll()")
@@ -44,7 +51,15 @@ public class UserController {
         return jwtResponse.getResponse(tokens, map.get("fingerprint"), response);
     }
 
-    @PreAuthorize(" hasRole('STUDENT')")
+    @PreAuthorize("permitAll()")
+    @GetMapping("/confirm/{email}")
+    public String confirmEmail(@PathVariable String email) {
+        userService.confirmEmail(email);
+        return "email is confirmed. You can close the window.";
+    }
+
+
+        @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/lessons/student")
     public String testStudent(){
         return "hello, STUDENT";

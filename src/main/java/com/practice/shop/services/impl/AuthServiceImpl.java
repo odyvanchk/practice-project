@@ -9,10 +9,11 @@ import com.practice.shop.models.User;
 import com.practice.shop.models.UserActiveRole;
 import com.practice.shop.models.UserRole;
 import com.practice.shop.services.AuthService;
-import com.practice.shop.services.exception.EntityAlreadyExistsException;
-import com.practice.shop.services.exception.UserHasNoRolesException;
-import com.practice.shop.services.exception.UserNotFoundException;
 import com.practice.shop.services.exception.WrongPasswordException;
+import com.practice.shop.services.exception.user.EmailIsNotConfirmedException;
+import com.practice.shop.services.exception.user.EntityAlreadyExistsException;
+import com.practice.shop.services.exception.user.UserHasNoRolesException;
+import com.practice.shop.services.exception.user.UserNotFoundException;
 import com.practice.shop.services.mappers.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
+    private final EmailServiceImpl emailService;
 
     @Override
     @Transactional
@@ -56,6 +58,9 @@ public class AuthServiceImpl implements AuthService {
         if (foundUser == null) {
             throw new UserNotFoundException(user.getEmail());
         }
+        if (!foundUser.isEmailConfirm()) {
+            throw new EmailIsNotConfirmedException();
+        }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
            return getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
         }
@@ -64,15 +69,6 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    @Override
-    public UserDto findByEmail(String email) {
-        User foundUser = userRepository.findUserByEmail(email);
-        if (foundUser == null) {
-            throw new UserNotFoundException(email);
-        }else {
-            return UserMapper.INSTANCE.userToUserDto(foundUser, userHasRoleRepository);
-        }
-    }
 
     @Override
     public Map<String, String> loginWithRefreshToken(String token, String fingerprint) {

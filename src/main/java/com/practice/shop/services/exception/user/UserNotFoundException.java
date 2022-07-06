@@ -1,4 +1,4 @@
-package com.practice.shop.services.exception;
+package com.practice.shop.services.exception.user;
 
 public class UserNotFoundException extends RuntimeException{
     public static String message  = "User with email %s doesn`t exist";

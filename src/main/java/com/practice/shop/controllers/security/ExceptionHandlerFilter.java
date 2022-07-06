@@ -21,10 +21,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         catch (JwtException ex) {
             response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("{ \"errors\": { \"msg\" : \"token invalid or expired\"} }");
+                response.getWriter().write(String.format("{ \"errors\": { \"msg\" : \"%s\"} }", ex.getMessage()));
                 response.getWriter().flush();
-            System.out.println(ex.getMessage());
-                return;
+            //System.out.println(ex.getMessage());
         }
     }
 }

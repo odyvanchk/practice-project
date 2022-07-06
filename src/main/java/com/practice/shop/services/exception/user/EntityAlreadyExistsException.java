@@ -1,4 +1,4 @@
-package com.practice.shop.services.exception;
+package com.practice.shop.services.exception.user;
 
 
 public class EntityAlreadyExistsException extends RuntimeException {

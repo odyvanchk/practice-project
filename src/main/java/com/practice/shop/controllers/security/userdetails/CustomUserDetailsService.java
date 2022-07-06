@@ -1,8 +1,8 @@
 package com.practice.shop.controllers.security.userdetails;
 
 import com.practice.shop.DTO.UserDto;
-import com.practice.shop.services.AuthService;
-import com.practice.shop.services.exception.UserNotFoundException;
+import com.practice.shop.services.UserService;
+import com.practice.shop.services.exception.user.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CustomUserDetailsService  implements UserDetailsService {
 
-    private AuthService authService;
+    private UserService userService;
     private UserDetailsMapper userDetailsMapper;
 
     @Override
     public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            UserDto user = authService.findByEmail(email);
+            UserDto user = userService.findByEmail(email);
             return userDetailsMapper.toUserDetails(user);
         }
         catch (UsernameNotFoundException ex){
