@@ -1,7 +1,6 @@
 package com.practice.shop.services.exception.handler;
 
-import com.practice.shop.services.exception.EntityAlreadyExistsException;
-import com.practice.shop.services.exception.UserHasNoRolesException;
+import com.practice.shop.services.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.validation.FieldError;
@@ -16,17 +15,17 @@ import org.springframework.web.context.request.WebRequest;
 @RestControllerAdvice
     public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorTransfer handleEntityAlreadyExistsException(EntityAlreadyExistsException ex, WebRequest request) {
-       return new ErrorTransfer(ex.getMessage());
+    public ErrorTransfer handleCustomException(RuntimeException ex, WebRequest request) {
+        return new ErrorTransfer(ex.getMessage());
     }
 
-    @ExceptionHandler(UserHasNoRolesException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorTransfer handleUserHasNoRolesException(UserHasNoRolesException ex, WebRequest request) {
+    public ErrorTransfer handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
         return new ErrorTransfer(ex.getMessage());
     }
 
@@ -41,4 +40,13 @@ import org.springframework.web.context.request.WebRequest;
         });
         return errors;
     }
+
+    @ExceptionHandler({WrongPasswordException.class, InvalidRefreshTokenException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorTransfer handleUnauthorizedException(Exception ex, WebRequest request) {
+        return new ErrorTransfer(ex.getMessage());
+    }
+
+
 }

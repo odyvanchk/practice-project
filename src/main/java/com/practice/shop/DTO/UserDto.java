@@ -31,6 +31,8 @@ public class UserDto {
     @JsonProperty("isStudent")
     private boolean isStudent;
 
+    private String fingerprint;
+
     public UserDto(String password, String login, String email, boolean isTeacher, boolean isStudent) {
         this.password = password;
         this.login = login;
