@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @EnableWebSecurity
 @RestControllerAdvice
-    public class GlobalExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class, EmailIsNotConfirmedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

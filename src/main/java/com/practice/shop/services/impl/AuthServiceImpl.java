@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new EntityAlreadyExistsException(user.getEmail());
         }
-        if (!user.isStudent() && !user.isTeacher()){
+        if (!user.isStudent() && !user.isTeacher()) {
             throw new UserHasNoRolesException();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -62,9 +62,8 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailIsNotConfirmedException();
         }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-           return getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
-        }
-        else {
+            return getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
+        } else {
             throw new WrongPasswordException(user.getEmail());
         }
     }
@@ -81,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    private void saveUserRoles(UserDto user, Integer userId){
+    private void saveUserRoles(UserDto user, Integer userId) {
         if (user.isStudent()) {
             userHasRoleRepository.save(new UserActiveRole(userId, UserRole.STUDENT.getRoleNumber()));
         }
@@ -95,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = accessTokenService.generateAccessTokenByEmail(email);
         tokens.put("access", accessToken);
         tokens.put("accessExpTime", accessTokenService.getExpirationTime(accessToken).toString());
-        tokens.put("refresh", refreshTokenService.generateAndSaveRefreshToken( fingerprint, userId).getToken());
+        tokens.put("refresh", refreshTokenService.generateAndSaveRefreshToken(fingerprint, userId).getToken());
         return tokens;
     }
 }

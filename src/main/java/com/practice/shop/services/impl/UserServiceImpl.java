@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         User foundUser = userRepository.findUserByEmail(email);
         if (foundUser == null) {
             throw new UserNotFoundException(email);
-        }else {
+        } else {
             return UserMapper.INSTANCE.userToUserDto(foundUser, userHasRoleRepository);
         }
     }

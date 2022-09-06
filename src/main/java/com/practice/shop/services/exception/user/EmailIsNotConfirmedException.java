@@ -1,6 +1,6 @@
 package com.practice.shop.services.exception.user;
 
-public class EmailIsNotConfirmedException extends RuntimeException{
+public class EmailIsNotConfirmedException extends RuntimeException {
 
     public static final String MESSAGE = "Email is not confirmed. Please, check your email.";
 
