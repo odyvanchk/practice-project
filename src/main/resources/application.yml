@@ -1,0 +1,37 @@
+spring:
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/english_lessons_course_project"
+    username: "root1"
+    password: "root"
+    driver-class-name: "org.postgresql.Driver"
+
+  jpa:
+    database: "postgresql"
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    show-sql: true
+
+  sql:
+    init:
+      mode: "embedded"
+      schema-locations: "classpath*:db/migration/V1__init_db.sql"
+  flyway:
+      baseline-on-migrate: true
+      baseline-version: 0
+  mail:
+    host: "smtp.gmail.com"
+    port: 587
+    username: curiosity.english.courses@gmail.com
+    password: vebgnxxvwcuqvtfb
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  expiration-time-access: 15
+  expiration-time-refresh: 60
+  secret: "sdfaDdDkbHJKmHfffsdfwfergkegDV3RFdsXDdSfsWs"
