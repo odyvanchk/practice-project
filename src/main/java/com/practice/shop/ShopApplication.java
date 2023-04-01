@@ -11,7 +11,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 public class ShopApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RuntimeException {
         ApplicationContext context = SpringApplication.run(ShopApplication.class, args);
 //        for(String bean:context.getBeanDefinitionNames()) {
 //            System.out.println(bean);

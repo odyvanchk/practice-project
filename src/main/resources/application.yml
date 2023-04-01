@@ -1,13 +1,17 @@
 spring:
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   datasource:
     url: "jdbc:postgresql://localhost:5432/english_lessons_course_project"
-    username: "root"
-    password: "1D4fkS"
+    username: "root1"
+    password: "root"
     driver-class-name: "org.postgresql.Driver"
 
   jpa:
     database: "postgresql"
     database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    show-sql: true
 
   sql:
     init:
@@ -28,6 +32,6 @@ spring:
           starttls:
             enable: true
 jwt:
-  expiration-time-access: 30
+  expiration-time-access: 15
   expiration-time-refresh: 60
   secret: "sdfaDdDkbHJKmHfffsdfwfergkegDV3RFdsXDdSfsWs"
