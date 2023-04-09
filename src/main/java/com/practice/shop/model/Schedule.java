@@ -1,18 +1,16 @@
 package com.practice.shop.model;
 
-import com.practice.shop.model.lesson.LessonsStatus;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
 
 
 @Getter
 @Setter
 @Entity
-@Table(name = "schedules")
+@Table(name = "teachers_schedules")
 @NoArgsConstructor
 public class Schedule {
 
@@ -22,26 +20,12 @@ public class Schedule {
     private Long id;
 
     @Column(name = "id_teacher", nullable = false)
-    private Integer idTeacher;
+    private Long idTeacher;
 
     @Column(name = "date_time_start", nullable = false)
-    private Instant dateTimeStart;
+    private LocalDateTime dateTimeStart;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "status", nullable = false)
-    private LessonsStatus status;
+    @JoinColumn(name = "is_available", nullable = false)
+    private boolean isAvailable;
 
-
-    @Column(name = "current_students_count", nullable = false)
-    private Integer currentStudentsCount;
-
-    @Column(name = "max_students_count", nullable = false)
-    private Integer maxStudentsCount;
-
-    @Column(name = "date_time_finish")
-    private Instant dateTimeFinish;
-
-    public Schedule(Long lessonScheduleId) {
-        this.id = lessonScheduleId;
-    }
 }

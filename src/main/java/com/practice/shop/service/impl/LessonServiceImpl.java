@@ -3,7 +3,6 @@ package com.practice.shop.service.impl;
 import com.practice.shop.model.Schedule;
 import com.practice.shop.model.exception.IllegalOperationException;
 import com.practice.shop.model.lesson.Lesson;
-import com.practice.shop.model.lesson.LessonId;
 import com.practice.shop.model.lesson.LessonsStatus;
 import com.practice.shop.model.user.User;
 import com.practice.shop.repository.LessonRepository;
@@ -22,16 +21,19 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public Lesson book(Long lessonScheduleId, Long userId) {
+    public Lesson book(Long lessonScheduleId, Long studentId) {
         Schedule lessonSchedule = scheduleRepository.getReferenceById(lessonScheduleId);
-        if (lessonSchedule.getCurrentStudentsCount() >= lessonSchedule.getMaxStudentsCount()) {
-            throw new IllegalOperationException("no available places");
+        if (!lessonSchedule.isAvailable()) {
+            throw new IllegalOperationException("sorry, this lesson has already booked");
         }
         Lesson newLesson = new Lesson();
-        newLesson.setId(new LessonId());
-        newLesson.setIdStudent(new User(userId));
-        newLesson.setSchedule(new Schedule(lessonScheduleId));
-        newLesson.setStatus(new LessonsStatus(0, "BOOKED"));
+        newLesson.setIdStudent(new User(studentId));
+        newLesson.setIdTeacher(new User(lessonSchedule.getIdTeacher()));
+        newLesson.setDateTime(lessonSchedule.getDateTimeStart());
+        newLesson.setStatus(LessonsStatus.BOOKED);
+        lessonSchedule.setAvailable(false);
+        scheduleRepository.save(lessonSchedule);
         return lessonRepository.save(newLesson);
     }
+
 }

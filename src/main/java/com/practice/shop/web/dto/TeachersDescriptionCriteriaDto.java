@@ -1,5 +1,7 @@
 package com.practice.shop.web.dto;
 
+import com.practice.shop.model.Language;
+import com.practice.shop.model.user.UsersCountry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,37 +17,19 @@ import java.util.Set;
 @NoArgsConstructor
 public class TeachersDescriptionCriteriaDto {
 
-    private Set<Integer> countryIdSet;
-
+    private Set<UsersCountry> countries;
     private Integer experienceFrom;
-
     private Integer experienceTo;
-
     private String description;
-
-    private String photoRef;
-
+//    private String photoRef;
     private Boolean isNative;
-
     private Double markFrom;
-
     private Double markTo;
-
     private BigDecimal defaultPriceFrom;
-
     private BigDecimal defaultPriceTo;
-
     private Integer weekDay;
-
     private LocalTime start;
-
-
-
+    private Set<Language> languages;
     //private Set<LocalDateTime> dateTimeSet;
-
-
-
-
-
 
 }

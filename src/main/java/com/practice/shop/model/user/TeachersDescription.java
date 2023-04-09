@@ -1,5 +1,6 @@
 package com.practice.shop.model.user;
 
+import com.practice.shop.model.Language;
 import com.practice.shop.model.Schedule;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,14 +27,10 @@ public class TeachersDescription {
     @JoinColumn(name = "id_user")
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "country")
-    private Integer country;
-
-    @Column(name = "experience")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country")
+    private UsersCountry country;
     private Integer experience;
-
-    @Column(name = "description", length = 1000)
     private String description;
 
     @Column(name = "photo_ref", length = 400)
@@ -41,8 +38,6 @@ public class TeachersDescription {
 
     @Column(name = "is_native")
     private Boolean isNative;
-
-    @Column(name = "mark")
     private Double mark;
 
     @Column(name = "default_price")
@@ -51,13 +46,11 @@ public class TeachersDescription {
     @Column(name = "default_student_count")
     private Integer defaultStudentCount;
 
+    private Language language;
+
     @OneToMany(mappedBy = "idTeacher")
-    @BatchSize(size = 2)
+    @BatchSize(size = 5)
     private Set<Schedule> schedules = new LinkedHashSet<>();
-
-
-    @OneToMany(mappedBy = "idTeacher")
-    private Set<TeachersPermanentPreference> teachersPermanentPreferences = new LinkedHashSet<>();
 
 
     @Override

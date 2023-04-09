@@ -3,8 +3,7 @@ package com.practice.shop.service.impl;
 import com.practice.shop.model.TeachersDescriptionCriteria;
 import com.practice.shop.model.user.TeachersDescription;
 import com.practice.shop.model.user.TeachersDescription_;
-import com.practice.shop.model.user.TeachersPermanentPreference;
-import com.practice.shop.model.user.TeachersPermanentPreference_;
+import com.practice.shop.model.user.UsersCountry;
 import com.practice.shop.service.SearchLessonService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -32,10 +31,9 @@ public class SearchLessonServiceImpl implements SearchLessonService {
         CriteriaQuery<TeachersDescription> cq = cb.createQuery(TeachersDescription.class);
 
         Root<TeachersDescription> root = cq.from(TeachersDescription.class);
-        Join<TeachersDescription, TeachersPermanentPreference> preferenceJoin = root.join(TeachersDescription_.teachersPermanentPreferences, JoinType.LEFT);
         //Join<TeachersDescription, Schedule> scheduleJoin = root.join(TeachersDescription_.schedules, JoinType.LEFT);
 
-        Predicate[] predicates = buildPredicates(criteria, cb, root, preferenceJoin);
+        Predicate[] predicates = buildPredicates(criteria, cb, root);
         var allQuery = session.createQuery(cq
                 .select(root)
                 .where(predicates)
@@ -46,20 +44,17 @@ public class SearchLessonServiceImpl implements SearchLessonService {
     }
 
     private Predicate[] buildPredicates(TeachersDescriptionCriteria criteria, CriteriaBuilder cb,
-                                        Root<TeachersDescription> root, Join<TeachersDescription,
-                                        TeachersPermanentPreference> preferenceJoin) {
+                                        Root<TeachersDescription> root) {
         List<Predicate> predicates = new ArrayList<>();
-        if (criteria.getWeekDay() != null) {
-            predicates.add(cb.equal(preferenceJoin.get(TeachersPermanentPreference_.weekDay), criteria.getWeekDay()));
-        }
-        if (criteria.getStart() != null) {
-            predicates.add(cb.equal(preferenceJoin.get(TeachersPermanentPreference_.timeStart), criteria.getStart()));
-        }
         if (criteria.getIsNative() != null) {
             predicates.add(cb.equal(root.get(TeachersDescription_.isNative), criteria.getIsNative()));
         }
-        if (criteria.getCountryIdSet() != null) {
-            predicates.add(cb.in(root.get(TeachersDescription_.country)));
+        if (criteria.getCountries() != null) {
+            CriteriaBuilder.In<UsersCountry> integerIn = cb.in(root.get(TeachersDescription_.country));
+            criteria.getCountries().forEach(
+                    integerIn::value
+            );
+            predicates.add(integerIn);
         }
         if (criteria.getDefaultPriceFrom() != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get(TeachersDescription_.defaultPrice), criteria.getDefaultPriceFrom()));
@@ -73,14 +68,14 @@ public class SearchLessonServiceImpl implements SearchLessonService {
         if (criteria.getExperienceTo() != null) {
             predicates.add(cb.lessThanOrEqualTo(root.get(TeachersDescription_.experience), criteria.getExperienceTo()));
         }
-        if (criteria.getStart() != null) {
-            predicates.add(cb.equal(preferenceJoin.get(TeachersPermanentPreference_.timeStart), criteria.getStart()));
-        }
         if (criteria.getMarkFrom() != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get(TeachersDescription_.mark), criteria.getMarkFrom()));
         }
         if (criteria.getMarkTo() != null) {
             predicates.add(cb.lessThanOrEqualTo(root.get(TeachersDescription_.mark), criteria.getMarkTo()));
+        }
+        if (criteria.getLanguages() != null) {
+            predicates.add(cb.in(root.get(TeachersDescription_.language)));
         }
         return predicates.toArray(Predicate[]::new);
     }

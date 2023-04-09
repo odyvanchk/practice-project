@@ -1,7 +1,8 @@
 package com.practice.shop.web.dto;
 
+import com.practice.shop.model.Language;
 import com.practice.shop.model.Schedule;
-import com.practice.shop.model.user.TeachersPermanentPreference;
+import com.practice.shop.model.user.UsersCountry;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Setter
 public class TeachersDescriptionDto extends UserDto {
 
-    private Integer country;
+    private UsersCountry country;
     private Integer experience;
     private String description;
     private String photoRef;
@@ -22,7 +23,7 @@ public class TeachersDescriptionDto extends UserDto {
     private Double mark;
     private BigDecimal defaultPrice;
     private Integer defaultStudentCount;
+    private Set<Language> languages;
     private Set<Schedule> schedules;
-    private Set<TeachersPermanentPreference> teachersPermanentPreferences;
 
 }

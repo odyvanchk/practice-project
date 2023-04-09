@@ -1,5 +1,6 @@
 package com.practice.shop.model;
 
+import com.practice.shop.model.user.UsersCountry;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,11 @@ import java.util.Set;
 @Setter
 public class TeachersDescriptionCriteria {
 
-    private Set<Integer> countryIdSet;
+    private Set<UsersCountry> countries;
     private Integer experienceFrom;
     private Integer experienceTo;
     private String description;
-    private String photoRef;
+//    private String photoRef;
     private Boolean isNative;
     private Double markFrom;
     private Double markTo;
@@ -23,5 +24,6 @@ public class TeachersDescriptionCriteria {
     private BigDecimal defaultPriceTo;
     private Integer weekDay;
     private LocalTime start;
+    private Set<Language> languages;
 
 }

@@ -34,8 +34,21 @@ public class TeacherController {
     @PostMapping(value = "/{id}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeachersDescriptionDto fillInfo (@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
         var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
-        teacherService.saveInfo(teachersDescriptionDto.getImage(), teacherInfo);
+        teacherService.save(teachersDescriptionDto.getImage(), teacherInfo);
         return descriptionMapper.entityToDto(teacherInfo);
+    }
+
+    @PostMapping(value = "/{id}/edit",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public TeachersDescriptionDto updateInfo (@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
+        var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
+        teacherService.update(teachersDescriptionDto.getImage(), teacherInfo);
+        return descriptionMapper.entityToDto(teacherInfo);
+    }
+
+    @GetMapping(value = "/{id}")
+    public TeachersDescriptionDto getInfo (@PathVariable Long id) {
+        TeachersDescription descriptionDto = teacherService.get(id);
+        return descriptionMapper.entityToDto(descriptionDto);
     }
 
 }

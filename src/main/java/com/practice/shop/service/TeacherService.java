@@ -5,6 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface TeacherService {
 
-    TeachersDescription saveInfo(MultipartFile file, TeachersDescription teacherInfo);
+    TeachersDescription save(MultipartFile file, TeachersDescription teacherInfo);
 
+    TeachersDescription get(Long id);
+
+    TeachersDescription update(MultipartFile image, TeachersDescription teacherInfo);
 }

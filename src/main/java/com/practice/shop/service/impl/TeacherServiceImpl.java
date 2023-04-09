@@ -1,5 +1,6 @@
 package com.practice.shop.service.impl;
 
+import com.practice.shop.model.exception.UserNotFoundException;
 import com.practice.shop.model.user.TeachersDescription;
 import com.practice.shop.repository.TeacherServiceRepository;
 import com.practice.shop.service.TeacherService;
@@ -20,7 +21,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Transactional
-    public TeachersDescription saveInfo(MultipartFile file, TeachersDescription teacherInfo) {
+    public TeachersDescription save(MultipartFile file, TeachersDescription teacherInfo) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String uploadDir = "user-photos/" + teacherInfo.getId();
 
@@ -30,6 +31,28 @@ public class TeacherServiceImpl implements TeacherService {
             throw new RuntimeException("sorry, try again later");
         }
         teacherInfo.setPhotoRef(uploadDir + "/" + fileName);
+        return teacherServiceRepository.save(teacherInfo);
+    }
+
+    @Override
+    public TeachersDescription get(Long id) {
+        return teacherServiceRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public TeachersDescription update(MultipartFile file, TeachersDescription teacherInfo) {
+        if (!file.isEmpty()) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            String uploadDir = "user-photos/" + teacherInfo.getId();
+
+            try {
+                FileUploadUtils.saveFile(uploadDir, fileName, file);
+            } catch (IOException e) {
+                throw new RuntimeException("sorry, try again later");
+            }
+            teacherInfo.setPhotoRef(uploadDir + "/" + fileName);
+        }
         return teacherServiceRepository.save(teacherInfo);
     }
 
