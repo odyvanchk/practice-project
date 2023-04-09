@@ -3,25 +3,22 @@ spring:
     serialization:
       fail-on-empty-beans: false
   datasource:
-    url: "jdbc:postgresql://localhost:5432/english_lessons_course_project"
-    username: "root1"
-    password: "root"
-    driver-class-name: "org.postgresql.Driver"
-
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=foreign_courses
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
   jpa:
-    database: "postgresql"
-    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-
-  sql:
-    init:
-      mode: "embedded"
-      schema-locations: "classpath*:db/migration/V1__init_db.sql"
   flyway:
-      baseline-on-migrate: true
-      baseline-version: 0
+      url: jdbc:postgresql://localhost:5432/postgres
+      user: postgres
+      password: root
+      schema: foreign_courses
+      locations: classpath:db/migration
   mail:
-    host: "smtp.gmail.com"
+    host: smtp.gmail.com
     port: 587
     username: curiosity.english.courses@gmail.com
     password: vebgnxxvwcuqvtfb
@@ -34,4 +31,8 @@ spring:
 jwt:
   expiration-time-access: 15
   expiration-time-refresh: 60
-  secret: "sdfaDdDkbHJKmHfffsdfwfergkegDV3RFdsXDdSfsWs"
+  secret: c651749e8354adb09452a8ad14d4beadb7d57064d6cfb5c0e812bc30724458d187f43e58c22c30486303bbfc655391860952e92add87b5ce9e2ac7cdc612ad73
+log4j:
+  logger:
+    org:
+      hibernate: DEBUG

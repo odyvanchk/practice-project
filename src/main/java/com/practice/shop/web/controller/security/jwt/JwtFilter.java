@@ -2,16 +2,17 @@ package com.practice.shop.web.controller.security.jwt;
 
 import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetails;
 import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetailsService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -28,11 +29,11 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        logger.info("do JWTfilter");
         String token = getTokenFromRequest(request);
 
         if (token != null && accessTokenService.validateToken(token)) {
-                String email = accessTokenService.getEmailFromToken(token);
+            logger.info("do JWTfilter");
+            String email = accessTokenService.getEmailFromToken(token);
                 CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails,
                                                                     null, customUserDetails.getAuthorities());

@@ -1,6 +1,7 @@
 package com.practice.shop.service;
 
-import javax.mail.MessagingException;
+
+import jakarta.mail.MessagingException;
 
 public interface EmailService {
 

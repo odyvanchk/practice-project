@@ -1,10 +1,10 @@
 package com.practice.shop.model.user;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -29,7 +29,7 @@ public class UserActiveRole {
     @AllArgsConstructor
     public static class UserRoleId implements Serializable {
 
-            private Integer userid;
+            private Long userid;
             private Integer roleId;
     }
 }

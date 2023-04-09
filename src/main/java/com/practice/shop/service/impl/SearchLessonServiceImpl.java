@@ -6,13 +6,14 @@ import com.practice.shop.model.user.TeachersDescription_;
 import com.practice.shop.model.user.TeachersPermanentPreference;
 import com.practice.shop.model.user.TeachersPermanentPreference_;
 import com.practice.shop.service.SearchLessonService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class SearchLessonServiceImpl implements SearchLessonService {
 
     @PersistenceContext
     private final EntityManager entityManager;
-    private final Integer PAGE_SIZE = 10;
+    private static final Integer PAGE_SIZE = 10;
 
 
     public List<TeachersDescription> searchByParams(TeachersDescriptionCriteria criteria, Long page) {

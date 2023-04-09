@@ -1,77 +1,22 @@
-CREATE TABLE public.waiting_list
-(
-    id_lesson bigint NOT NULL,
-    id_student integer NOT NULL,
-    PRIMARY KEY (id_lesson, id_student),
-    CONSTRAINT fk_wait_lesson FOREIGN KEY (id_lesson, id_student)
-        REFERENCES public.lessons (id_lesson_from_schedule, id_student) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT fk_wait_student FOREIGN KEY (id_student)
-        REFERENCES public.users (id_user) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-);
-
-ALTER TABLE IF EXISTS public.waiting_list
-    OWNER to root1;
-
-ALTER TABLE IF EXISTS public.lessons
-    ADD COLUMN max_students_count smallint NOT NULL DEFAULT 1;
-
-
--- ALTER TABLE IF EXISTS public.schedules
---     ADD COLUMN current_students_count smallint NOT NULL;
-
--- ALTER TABLE IF EXISTS public.schedules
---     ADD COLUMN price money;
+--set schema 'foreign_courses';
 --
--- ALTER TABLE IF EXISTS public.schedules
---     ALTER COLUMN price SET DEFAULT 10;
---
--- ALTER TABLE IF EXISTS public.schedules
---     ALTER COLUMN price SET NOT NULL;
+--CREATE TABLE waiting_list
+--(
+--    id_lesson bigint NOT NULL,
+--    id_student integer NOT NULL,
+--    PRIMARY KEY (id_lesson, id_student),
+--    CONSTRAINT fk_wait_lesson FOREIGN KEY (id_lesson, id_student)
+--        REFERENCES lessons (id_lesson_from_schedule, id_student) MATCH SIMPLE
+--        ON UPDATE NO ACTION
+--        ON DELETE NO ACTION,
+--    CONSTRAINT fk_wait_student FOREIGN KEY (id_student)
+--        REFERENCES users (id_user) MATCH SIMPLE
+--        ON UPDATE NO ACTION
+--        ON DELETE NO ACTION
+--);
 
-ALTER TABLE IF EXISTS public.teachers_schedules DROP COLUMN IF EXISTS price;
 
--- CREATE TABLE public.lessons
--- (
---     id_lesson_from_schedule bigint NOT NULL,
---     id_student integer NOT NULL,
---     status smallint NOT NULL,
---     PRIMARY KEY (id_lesson_from_schedule, id_student),
---     CONSTRAINT fk_schedule_lesson FOREIGN KEY (id_lesson_from_schedule)
---         REFERENCES public.schedules (id_lesson) MATCH SIMPLE
---         ON UPDATE NO ACTION
---         ON DELETE NO ACTION,
---     CONSTRAINT fk_lesson_student FOREIGN KEY (id_student)
---         REFERENCES public.users (id_user) MATCH SIMPLE
---         ON UPDATE NO ACTION
---         ON DELETE NO ACTION,
---     CONSTRAINT fk_lesson_status FOREIGN KEY (status)
---         REFERENCES public.lessons_statuses (id_lesson_status) MATCH SIMPLE
---         ON UPDATE NO ACTION
---         ON DELETE NO ACTION
--- );
 
-ALTER TABLE IF EXISTS public.lessons
-    OWNER to root1;
-
-CREATE TABLE public.teachers_one_time_preferences
-(
-    id_preference bigint NOT NULL,
-    id_teacher integer NOT NULL,
-    date_time_start timestamp without time zone NOT NULL,
-    date_time_finish timestamp without time zone NOT NULL,
-    PRIMARY KEY (id_preference),
-    CONSTRAINT fk_one_time_user FOREIGN KEY (id_teacher)
-        REFERENCES public.users (id_user) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-);
-
-ALTER TABLE IF EXISTS public.teachers_one_time_preferences
-    OWNER to root1;
 
 -- ALTER TABLE IF EXISTS public.lesson_reviews
 --     ADD COLUMN mark real;

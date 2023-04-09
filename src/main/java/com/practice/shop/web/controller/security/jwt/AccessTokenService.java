@@ -25,8 +25,8 @@ public class AccessTokenService {
         Date date = Date.from(LocalDateTime.now().plusMinutes(expTime).atZone(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("password", user.getPassword())
                 .setExpiration(date)
-                .claim("role", user.getUserRoles())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

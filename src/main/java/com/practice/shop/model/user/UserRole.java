@@ -1,10 +1,14 @@
 package com.practice.shop.model.user;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "user_roles")
+@Data
 public class UserRole {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user_role", nullable = false)
@@ -12,21 +16,5 @@ public class UserRole {
 
     @Column(name = "user_role", nullable = false, length = 60)
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
 }

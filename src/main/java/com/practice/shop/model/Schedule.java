@@ -1,11 +1,11 @@
 package com.practice.shop.model;
 
 import com.practice.shop.model.lesson.LessonsStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 
@@ -31,8 +31,6 @@ public class Schedule {
     @JoinColumn(name = "status", nullable = false)
     private LessonsStatus status;
 
-//    @Column(name = "topic", length = 500)
-//    private String topic;
 
     @Column(name = "current_students_count", nullable = false)
     private Integer currentStudentsCount;

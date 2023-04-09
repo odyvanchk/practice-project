@@ -1,6 +1,7 @@
 package com.practice.shop.model.user;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "users_countries")

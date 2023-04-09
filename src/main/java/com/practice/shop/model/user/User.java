@@ -1,10 +1,11 @@
 package com.practice.shop.model.user;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.LinkedHashSet;
@@ -20,7 +21,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user", nullable = false)
     private Long id;
 
@@ -38,7 +39,6 @@ public class User {
     @Column()
     private boolean isEmailConfirm;
 
-
     @ManyToMany
     @JoinTable(name = "user_has_role",
             joinColumns = @JoinColumn(name = "id_user"),
@@ -48,22 +48,5 @@ public class User {
     public User(Long userId) {
         this.id = userId;
     }
-
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
-
-
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_has_role",
-//            joinColumns = @JoinColumn(name = "id_user"),
-//            inverseJoinColumns = @JoinColumn(name = "id_role")
-//    )
-//    private Set<UsersRole> userRoles;
 
 }

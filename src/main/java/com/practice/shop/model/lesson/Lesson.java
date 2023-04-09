@@ -2,9 +2,9 @@ package com.practice.shop.model.lesson;
 
 import com.practice.shop.model.Schedule;
 import com.practice.shop.model.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 
 @Data
 @Entity

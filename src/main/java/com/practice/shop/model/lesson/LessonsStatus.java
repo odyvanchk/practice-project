@@ -1,10 +1,10 @@
 package com.practice.shop.model.lesson;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = "lessons_statuses")

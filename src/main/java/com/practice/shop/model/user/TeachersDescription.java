@@ -1,10 +1,10 @@
 package com.practice.shop.model.user;
 
 import com.practice.shop.model.Schedule;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;

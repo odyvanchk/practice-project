@@ -1,10 +1,10 @@
 package com.practice.shop;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 
@@ -12,7 +12,7 @@ import java.util.TimeZone;
 public class ShopApplication {
 
     public static void main(String[] args) throws RuntimeException {
-        ApplicationContext context = SpringApplication.run(ShopApplication.class, args);
+        SpringApplication.run(ShopApplication.class, args);
 //        for(String bean:context.getBeanDefinitionNames()) {
 //            System.out.println(bean);
 //        }
