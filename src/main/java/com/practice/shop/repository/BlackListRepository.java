@@ -1,4 +1,4 @@
-package com.practice.shop.service.impl;
+package com.practice.shop.repository;
 
 import com.practice.shop.model.BlackList;
 import com.practice.shop.model.BlackListPK;
