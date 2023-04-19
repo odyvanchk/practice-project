@@ -6,4 +6,6 @@ public interface LessonService {
 
     Lesson book(Long lessonScheduleId, Long userId);
 
+    void cancel(Long lessonId);
+
 }

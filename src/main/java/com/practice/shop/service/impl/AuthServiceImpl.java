@@ -31,15 +31,17 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
+    private final UserMapper userMapper;
     List<UserRole> userRoles;
 
-    public AuthServiceImpl(UserService userService, UserHasRoleRepository userHasRoleRepository, PasswordEncoder passwordEncoder, AccessTokenService accessTokenService, RefreshTokenService refreshTokenService, UserRoleRepository userRoleRepository) {
+    public AuthServiceImpl(UserService userService, UserHasRoleRepository userHasRoleRepository, PasswordEncoder passwordEncoder, AccessTokenService accessTokenService, RefreshTokenService refreshTokenService, UserRoleRepository userRoleRepository, UserMapper userMapper) {
         this.userService = userService;
         this.userHasRoleRepository = userHasRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.accessTokenService = accessTokenService;
         this.refreshTokenService = refreshTokenService;
-        this.userRoles = userRoleRepository.findAll();;
+        this.userRoles = userRoleRepository.findAll();
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -52,10 +54,10 @@ public class AuthServiceImpl implements AuthService {
             throw new UserHasNoRolesException();
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User newUser = userService.save(UserMapper.INSTANCE.userDtoToUser(user));
+        User newUser = userService.save(userMapper.userDtoToUser(user));
         saveUserRoles(user, newUser.getId());
 
-        UserMapper.INSTANCE.updateUserDto(user, newUser);
+        userMapper.updateUserDto(user, newUser);
         return user;
     }
 

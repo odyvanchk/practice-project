@@ -1,7 +1,7 @@
 package com.practice.shop.web.controller;
 
 import com.practice.shop.model.TeachersDescriptionCriteria;
-import com.practice.shop.model.user.TeachersDescription;
+import com.practice.shop.model.TeachersDescription;
 import com.practice.shop.service.SearchLessonService;
 import com.practice.shop.service.TeacherService;
 import com.practice.shop.web.dto.TeachersDescriptionCriteriaDto;
@@ -25,7 +25,7 @@ public class TeacherController {
     private final TeachersDescriptionMapper descriptionMapper;
 
     @GetMapping("/search")
-    public List<TeachersDescriptionDto> retrieveTeacher(TeachersDescriptionCriteriaDto criteriaDto, @RequestParam(defaultValue = "0", required = false) Long page) {
+    public List<TeachersDescriptionDto> retrieveTeacherList(TeachersDescriptionCriteriaDto criteriaDto, @RequestParam(defaultValue = "0", required = false) Long page) {
         TeachersDescriptionCriteria criteria = criteriaMapper.dtoToEntity(criteriaDto);
         List<TeachersDescription> teachersDescriptions = searchLessonService.searchByParams(criteria, page);
         return descriptionMapper.entityToDto(teachersDescriptions);
@@ -38,7 +38,7 @@ public class TeacherController {
         return descriptionMapper.entityToDto(teacherInfo);
     }
 
-    @PostMapping(value = "/{id}/edit",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{id}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeachersDescriptionDto updateInfo (@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
         var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
         teacherService.update(teachersDescriptionDto.getImage(), teacherInfo);

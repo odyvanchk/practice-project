@@ -1,6 +1,6 @@
 package com.practice.shop.service;
 
-import com.practice.shop.model.user.TeachersDescription;
+import com.practice.shop.model.TeachersDescription;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface TeacherService {
@@ -10,4 +10,5 @@ public interface TeacherService {
     TeachersDescription get(Long id);
 
     TeachersDescription update(MultipartFile image, TeachersDescription teacherInfo);
+
 }

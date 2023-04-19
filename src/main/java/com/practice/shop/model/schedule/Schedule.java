@@ -1,4 +1,4 @@
-package com.practice.shop.model;
+package com.practice.shop.model.schedule;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -16,13 +16,13 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_lesson", nullable = false)
+    @Column(name = "id_schedule", nullable = false)
     private Long id;
 
     @Column(name = "id_teacher", nullable = false)
     private Long idTeacher;
 
-    @Column(name = "date_time_start", nullable = false)
+    @Column(name = "time_start", nullable = false)
     private LocalDateTime dateTimeStart;
 
     @JoinColumn(name = "is_available", nullable = false)

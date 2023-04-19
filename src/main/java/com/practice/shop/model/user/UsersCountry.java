@@ -1,9 +1,11 @@
 package com.practice.shop.model.user;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 @Entity
+@Data
 @Table(name = "users_countries")
 public class UsersCountry {
 
@@ -15,19 +17,4 @@ public class UsersCountry {
     @Column(name = "name", nullable = false, length = 150)
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

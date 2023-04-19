@@ -1,7 +1,7 @@
 package com.practice.shop.service;
 
 import com.practice.shop.model.TeachersDescriptionCriteria;
-import com.practice.shop.model.user.TeachersDescription;
+import com.practice.shop.model.TeachersDescription;
 
 import java.util.List;
 

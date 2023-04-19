@@ -1,5 +1,6 @@
 package com.practice.shop.model;
 
+
 /**
  * @author Ermakovich Kseniya
  */

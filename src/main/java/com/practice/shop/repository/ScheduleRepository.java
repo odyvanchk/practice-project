@@ -1,6 +1,6 @@
 package com.practice.shop.repository;
 
-import com.practice.shop.model.Schedule;
+import com.practice.shop.model.schedule.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

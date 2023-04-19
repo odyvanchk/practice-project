@@ -1,6 +1,7 @@
 package com.practice.shop.web.dto;
 
 import com.practice.shop.model.Language;
+import com.practice.shop.model.LanguageLevel;
 import com.practice.shop.model.user.UsersCountry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,6 @@ public class TeachersDescriptionCriteriaDto {
     private Integer experienceFrom;
     private Integer experienceTo;
     private String description;
-//    private String photoRef;
     private Boolean isNative;
     private Double markFrom;
     private Double markTo;
@@ -29,7 +29,7 @@ public class TeachersDescriptionCriteriaDto {
     private BigDecimal defaultPriceTo;
     private Integer weekDay;
     private LocalTime start;
-    private Set<Language> languages;
-    //private Set<LocalDateTime> dateTimeSet;
+    private Language language;
+    private LanguageLevel levelFrom;
 
 }

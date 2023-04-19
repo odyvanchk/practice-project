@@ -18,8 +18,8 @@ public class UserDetailsMapper {
         CustomUserDetails c =  new CustomUserDetails();
         c.setEmail(user.getEmail());
         c.setPassword(user.getPassword());
+        c.setId(user.getId());
         c.setGrantedAuthorities(makeGrantedAuthorityList(user));
-
         return c;
     }
 

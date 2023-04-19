@@ -1,14 +1,17 @@
-package com.practice.shop.model.user;
+package com.practice.shop.model;
 
-import com.practice.shop.model.Language;
-import com.practice.shop.model.Schedule;
+import com.practice.shop.model.schedule.Schedule;
+import com.practice.shop.model.user.User;
+import com.practice.shop.model.user.UsersCountry;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.hibernate.annotations.JoinColumnOrFormula;
 
 
 @Getter
@@ -20,11 +23,11 @@ import java.util.Set;
 public class TeachersDescription {
 
     @Id
-    @Column(name = "id_user", nullable = false)
+    @Column(name = "id_teacher", nullable = false)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "id_teacher")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,18 +43,20 @@ public class TeachersDescription {
     private Boolean isNative;
     private Double mark;
 
-    @Column(name = "default_price")
-    private BigDecimal defaultPrice;
+    private LanguageLevel level;
 
-    @Column(name = "default_student_count")
-    private Integer defaultStudentCount;
-
+    @Enumerated(EnumType.STRING)
     private Language language;
+
+    @Column(name = "cost_per_our")
+    private BigDecimal defaultPrice;
 
     @OneToMany(mappedBy = "idTeacher")
     @BatchSize(size = 5)
     private Set<Schedule> schedules = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "bannedUser")
+    private List<BlackList> blackLists;
 
     @Override
     public String toString() {
@@ -62,9 +67,7 @@ public class TeachersDescription {
                 ", description='" + description + '\'' +
                 ", photoRef='" + photoRef + '\'' +
                 ", isNative=" + isNative +
-                ", mark=" + mark +
                 ", defaultPrice=" + defaultPrice +
-                ", defaultStudentCount=" + defaultStudentCount +
                 '}' ;
     }
 }

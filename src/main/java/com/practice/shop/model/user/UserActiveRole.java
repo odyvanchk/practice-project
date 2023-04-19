@@ -32,4 +32,5 @@ public class UserActiveRole {
             private Long userid;
             private Integer roleId;
     }
+
 }

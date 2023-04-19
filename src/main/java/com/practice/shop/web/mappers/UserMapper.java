@@ -6,10 +6,8 @@ import com.practice.shop.model.user.User;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-
-    UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
 
     @Mapping(target = "password", expression = "java(null)")
     @Mapping(target = "fingerprint", expression = "java(null)")

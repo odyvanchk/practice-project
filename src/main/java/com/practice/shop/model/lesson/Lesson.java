@@ -1,6 +1,5 @@
 package com.practice.shop.model.lesson;
 
-import com.practice.shop.model.Schedule;
 import com.practice.shop.model.user.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -29,5 +28,7 @@ public class Lesson {
     private LocalDateTime dateTime;
 
     private LessonsStatus status;
+
+    private String note;
 
 }

@@ -1,10 +1,11 @@
 package com.practice.shop.web.mappers;
 
-import com.practice.shop.model.user.TeachersDescription;
+import com.practice.shop.model.TeachersDescription;
 import com.practice.shop.web.dto.TeachersDescriptionDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface TeachersDescriptionMapper {
@@ -12,6 +13,8 @@ public interface TeachersDescriptionMapper {
    // @Mapping(target = "schedules", expression = "java(null)")
     List<TeachersDescriptionDto> entityToDto(List<TeachersDescription> teachersDescriptionList);
 
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "login", source = "user.login")
     TeachersDescriptionDto entityToDto(TeachersDescription teachersDescription);
 
     TeachersDescription dtoToEntity(TeachersDescriptionDto teachersDescriptionDto);

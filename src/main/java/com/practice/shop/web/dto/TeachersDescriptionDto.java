@@ -1,7 +1,8 @@
 package com.practice.shop.web.dto;
 
 import com.practice.shop.model.Language;
-import com.practice.shop.model.Schedule;
+import com.practice.shop.model.LanguageLevel;
+import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.UsersCountry;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +13,11 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class TeachersDescriptionDto extends UserDto {
+public class TeachersDescriptionDto {
 
+    private Long id;
+    private String login;
+    private String email;
     private UsersCountry country;
     private Integer experience;
     private String description;
@@ -22,8 +26,8 @@ public class TeachersDescriptionDto extends UserDto {
     private Boolean isNative;
     private Double mark;
     private BigDecimal defaultPrice;
-    private Integer defaultStudentCount;
-    private Set<Language> languages;
+    private Language language;
+    private LanguageLevel level;
     private Set<Schedule> schedules;
 
 }

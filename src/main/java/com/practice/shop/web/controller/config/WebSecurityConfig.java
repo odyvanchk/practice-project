@@ -31,12 +31,12 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.cors().and().csrf().disable().
-                httpBasic().disable().
-                sessionManagement().sessionCreationPolicy(STATELESS).
-                and().
-                addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).
-                addFilterBefore(exceptionHandlerFilter, JwtFilter.class)
+        return http.cors().and().csrf().disable()
+                .httpBasic().disable()
+                .sessionManagement().sessionCreationPolicy(STATELESS)
+                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, JwtFilter.class)
                 .build();
     }
 

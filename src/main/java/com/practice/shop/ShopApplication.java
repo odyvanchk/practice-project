@@ -1,6 +1,7 @@
 package com.practice.shop;
 
 import jakarta.annotation.PostConstruct;
+import java.util.Arrays;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +21,6 @@ public class ShopApplication {
 
     @PostConstruct
     public void init(){
-        // Setting Spring Boot SetTimeZone
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 }

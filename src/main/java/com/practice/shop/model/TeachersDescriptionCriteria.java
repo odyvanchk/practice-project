@@ -16,7 +16,6 @@ public class TeachersDescriptionCriteria {
     private Integer experienceFrom;
     private Integer experienceTo;
     private String description;
-//    private String photoRef;
     private Boolean isNative;
     private Double markFrom;
     private Double markTo;
@@ -24,6 +23,7 @@ public class TeachersDescriptionCriteria {
     private BigDecimal defaultPriceTo;
     private Integer weekDay;
     private LocalTime start;
-    private Set<Language> languages;
+    private Language language;
+    private LanguageLevel levelFrom;
 
 }

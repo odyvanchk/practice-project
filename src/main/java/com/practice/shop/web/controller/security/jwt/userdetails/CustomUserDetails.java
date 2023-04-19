@@ -11,6 +11,7 @@ public class CustomUserDetails implements UserDetails {
 
     private String email;
     private String password;
+    private Long id;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
 
@@ -47,5 +48,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

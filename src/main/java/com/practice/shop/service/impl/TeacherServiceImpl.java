@@ -1,8 +1,8 @@
 package com.practice.shop.service.impl;
 
 import com.practice.shop.model.exception.UserNotFoundException;
-import com.practice.shop.model.user.TeachersDescription;
-import com.practice.shop.repository.TeacherServiceRepository;
+import com.practice.shop.model.TeachersDescription;
+import com.practice.shop.repository.TchDescnRepository;
 import com.practice.shop.service.TeacherService;
 import com.practice.shop.service.utils.FileUploadUtils;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
 
-    private final TeacherServiceRepository teacherServiceRepository;
+    private final TchDescnRepository tchDescnRepository;
 
     @Override
     @Transactional
@@ -31,12 +31,12 @@ public class TeacherServiceImpl implements TeacherService {
             throw new RuntimeException("sorry, try again later");
         }
         teacherInfo.setPhotoRef(uploadDir + "/" + fileName);
-        return teacherServiceRepository.save(teacherInfo);
+        return tchDescnRepository.save(teacherInfo);
     }
 
     @Override
     public TeachersDescription get(Long id) {
-        return teacherServiceRepository.findById(id)
+        return tchDescnRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -53,7 +53,7 @@ public class TeacherServiceImpl implements TeacherService {
             }
             teacherInfo.setPhotoRef(uploadDir + "/" + fileName);
         }
-        return teacherServiceRepository.save(teacherInfo);
+        return tchDescnRepository.save(teacherInfo);
     }
 
 }
