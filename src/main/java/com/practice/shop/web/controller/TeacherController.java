@@ -31,22 +31,22 @@ public class TeacherController {
         return descriptionMapper.entityToDto(teachersDescriptions);
     }
 
-    @PostMapping(value = "/{id}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public TeachersDescriptionDto fillInfo (@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
+    @PostMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public TeachersDescriptionDto fillInfo(@ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
         var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
         teacherService.save(teachersDescriptionDto.getImage(), teacherInfo);
         return descriptionMapper.entityToDto(teacherInfo);
     }
 
-    @PutMapping(value = "/{id}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public TeachersDescriptionDto updateInfo (@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public TeachersDescriptionDto updateInfo(@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
         var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
         teacherService.update(teachersDescriptionDto.getImage(), teacherInfo);
         return descriptionMapper.entityToDto(teacherInfo);
     }
 
     @GetMapping(value = "/{id}")
-    public TeachersDescriptionDto getInfo (@PathVariable Long id) {
+    public TeachersDescriptionDto getInfo(@PathVariable Long id) {
         TeachersDescription descriptionDto = teacherService.get(id);
         return descriptionMapper.entityToDto(descriptionDto);
     }
