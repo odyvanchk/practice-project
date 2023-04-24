@@ -2,13 +2,12 @@ package com.practice.shop.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.practice.shop.web.dto.group.onSearchTeacher;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

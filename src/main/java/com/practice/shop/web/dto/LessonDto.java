@@ -1,7 +1,7 @@
 package com.practice.shop.web.dto;
 
-import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.lesson.LessonsStatus;
+import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.User;
 import lombok.Data;
 

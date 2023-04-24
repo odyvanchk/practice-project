@@ -1,30 +1,31 @@
 package com.practice.shop.service.impl;
 
 import com.practice.shop.model.BlackList;
-import com.practice.shop.model.BlackListPK;
 import com.practice.shop.model.BlackListPK_;
 import com.practice.shop.model.BlackList_;
-import com.practice.shop.model.Language;
-import com.practice.shop.model.TeachersDescriptionCriteria;
+import com.practice.shop.model.TchDescriptionResultList;
 import com.practice.shop.model.TeachersDescription;
+import com.practice.shop.model.TeachersDescriptionCriteria;
 import com.practice.shop.model.TeachersDescription_;
-import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.User_;
 import com.practice.shop.model.user.UsersCountry;
 import com.practice.shop.service.SearchLessonService;
 import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetails;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +34,9 @@ public class SearchLessonServiceImpl implements SearchLessonService {
     @PersistenceContext
     private final EntityManager entityManager;
     private static final Integer PAGE_SIZE = 10;
-    private final BlackListRepository blackListRepository;
 
 
-    public List<TeachersDescription> searchByParams(TeachersDescriptionCriteria criteria, Long page) {
+    public TchDescriptionResultList searchByParams(TeachersDescriptionCriteria criteria, Long page) {
         Session session = (Session) entityManager.getDelegate();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<TeachersDescription> cq = cb.createQuery(TeachersDescription.class);
@@ -50,8 +50,27 @@ public class SearchLessonServiceImpl implements SearchLessonService {
                 .groupBy(root.get(TeachersDescription_.id)))
                 .setFirstResult((int) (page * PAGE_SIZE))//offset
                 .setMaxResults(PAGE_SIZE);//limit
-        return allQuery.getResultList();
+        var resultList = new TchDescriptionResultList();
+        resultList.setCurrentPage(page);
+        resultList.setTeachersDescriptions(allQuery.getResultList());
+        resultList.setTotalCount(getTotalPages(criteria));
+        resultList.setPageSize(PAGE_SIZE);
+        return resultList;
     }
+
+    public Long getTotalPages(TeachersDescriptionCriteria criteria) {
+        Session session = (Session) entityManager.getDelegate();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<TeachersDescription> root = cq.from(TeachersDescription.class);
+        Predicate[] predicates = buildPredicates(criteria,cb,root);
+
+        return session.createQuery(cq
+                        .select(cb.count(root))
+                        .where(predicates))
+                .getSingleResult();
+    }
+
 
     private Predicate[] buildPredicates(TeachersDescriptionCriteria criteria, CriteriaBuilder cb,
                                         Root<TeachersDescription> root) {

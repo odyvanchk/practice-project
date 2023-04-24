@@ -4,6 +4,7 @@ import com.practice.shop.model.exception.EmailIsNotConfirmedException;
 import com.practice.shop.model.exception.EntityAlreadyExistsException;
 import com.practice.shop.model.exception.UserHasNoRolesException;
 import com.practice.shop.model.exception.WrongPasswordException;
+import com.practice.shop.model.user.AuthEntity;
 import com.practice.shop.model.user.User;
 import com.practice.shop.model.user.UserActiveRole;
 import com.practice.shop.model.user.UserRole;
@@ -11,17 +12,16 @@ import com.practice.shop.repository.UserHasRoleRepository;
 import com.practice.shop.repository.UserRoleRepository;
 import com.practice.shop.service.AuthService;
 import com.practice.shop.service.UserService;
-import com.practice.shop.web.dto.UserDto;
 import com.practice.shop.web.controller.security.jwt.AccessTokenService;
 import com.practice.shop.web.controller.security.jwt.RefreshTokenService;
+import com.practice.shop.web.dto.UserDto;
 import com.practice.shop.web.mappers.UserMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -62,13 +62,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, String> login(UserDto user) {
+    public AuthEntity login(UserDto user) {
         User foundUser = userService.findByEmail(user.getEmail());
         if (!foundUser.isEmailConfirm()) {
             throw new EmailIsNotConfirmedException();
         }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            return getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
+            Map<String, String> map = getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
+            AuthEntity auth = new AuthEntity();
+            auth.setId(foundUser.getId());
+            auth.setRoles(foundUser.getUserRoles());
+            auth.setAccess(map.get("access"));
+            auth.setExpTime(Long.parseLong(map.get("accessExpTime")));
+            auth.setRefresh(map.get("refresh"));
+            return auth;
         } else {
             throw new WrongPasswordException(user.getEmail());
         }
@@ -76,16 +83,21 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public Map<String, String> loginWithRefreshToken(String token, String fingerprint) {
+    public AuthEntity loginWithRefreshToken(String token, String fingerprint) {
         Long userId = refreshTokenService.validateToken(token, fingerprint);
         User user = userService.findById(userId);
-        return getAccessRefreshTokens(user.getEmail(), fingerprint, userId);
+        Map<String, String> map = getAccessRefreshTokens(user.getEmail(), fingerprint, user.getId());
+        AuthEntity auth = new AuthEntity();
+        auth.setId(user.getId());
+        auth.setRoles(user.getUserRoles());
+        auth.setAccess(map.get("access"));
+        auth.setExpTime(Long.parseLong(map.get("accessExpTime")));
+        auth.setRefresh(map.get("refresh"));
+        return auth;
     }
 
 
     private void saveUserRoles(UserDto user, Long userId) {
-
-
         if (user.isStudent()) {
             userHasRoleRepository.save(new UserActiveRole(userId, getUserRoleId("STUDENT")));
         }

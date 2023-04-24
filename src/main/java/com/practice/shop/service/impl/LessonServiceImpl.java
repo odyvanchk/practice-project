@@ -1,9 +1,9 @@
 package com.practice.shop.service.impl;
 
-import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.exception.IllegalOperationException;
 import com.practice.shop.model.lesson.Lesson;
 import com.practice.shop.model.lesson.LessonsStatus;
+import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.User;
 import com.practice.shop.repository.LessonRepository;
 import com.practice.shop.repository.ScheduleRepository;
@@ -42,6 +42,7 @@ public class LessonServiceImpl implements LessonService {
     public void cancel(Long lessonId) {
         var lesson = lessonRepository.findById(lessonId);
         lesson.map(lesson1 -> {
+            //todo
             lesson1.setStatus(LessonsStatus.CANCELLED);
             lessonRepository.save(lesson1);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

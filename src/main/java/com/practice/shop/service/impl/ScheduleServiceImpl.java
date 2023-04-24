@@ -1,16 +1,14 @@
 package com.practice.shop.service.impl;
 
+import com.practice.shop.model.RangeTime;
 import com.practice.shop.model.schedule.Command;
 import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.repository.ScheduleRepository;
 import com.practice.shop.service.ScheduleService;
-import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetails;
 import com.practice.shop.web.dto.ScheduleDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,11 +36,17 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleDto.times()
                 .stream()
                 .filter(slot -> slot.getCommand().equals(Command.DELETE))
-                .forEach(slot -> {
-                    scheduleRepository.deleteById(slot.getId());
-                });
+                .forEach(slot -> scheduleRepository.deleteById(slot.getId()));
 
         return scheduleRepository.saveAll(schedules);
+    }
+
+    @Override
+    public List<Schedule> get(Long id, RangeTime range) {
+        return scheduleRepository.findByIdTeacherAndDateTimeStartGreaterThanEqualAndDateTimeStartLessThanEqual(
+                id,
+                range.getStart(),
+                range.getFinish());
     }
 
 }

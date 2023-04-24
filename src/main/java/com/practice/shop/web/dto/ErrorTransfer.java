@@ -1,9 +1,8 @@
 package com.practice.shop.web.dto;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class ErrorTransfer {

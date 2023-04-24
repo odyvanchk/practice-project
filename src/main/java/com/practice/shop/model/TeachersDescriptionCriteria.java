@@ -1,12 +1,11 @@
 package com.practice.shop.model;
 
 import com.practice.shop.model.user.UsersCountry;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

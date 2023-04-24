@@ -4,14 +4,15 @@ import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.User;
 import com.practice.shop.model.user.UsersCountry;
 import jakarta.persistence.*;
-import java.util.List;
-import lombok.*;
-import org.hibernate.annotations.BatchSize;
-
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
-import org.hibernate.annotations.JoinColumnOrFormula;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 
 @Getter

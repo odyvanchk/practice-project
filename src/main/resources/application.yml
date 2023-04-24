@@ -15,7 +15,8 @@ spring:
       url: jdbc:postgresql://localhost:5432/postgres
       user: postgres
       password: root
-      schemas: foreign_courses
+#     todo
+      schema: foreign_courses
       locations: classpath:db/migration
   mail:
     host: smtp.gmail.com

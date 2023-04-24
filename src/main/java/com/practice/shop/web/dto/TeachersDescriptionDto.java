@@ -4,12 +4,11 @@ import com.practice.shop.model.Language;
 import com.practice.shop.model.LanguageLevel;
 import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.model.user.UsersCountry;
+import java.math.BigDecimal;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.math.BigDecimal;
-import java.util.Set;
 
 @Getter
 @Setter

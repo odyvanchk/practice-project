@@ -1,17 +1,16 @@
 package com.practice.shop.web.controller.security.jwt;
 
-import com.practice.shop.repository.RefreshSessionRepository;
-import com.practice.shop.model.user.RefreshSession;
 import com.practice.shop.model.exception.InvalidRefreshTokenException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
+import com.practice.shop.model.user.RefreshSession;
+import com.practice.shop.repository.RefreshSessionRepository;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RefreshTokenService {
@@ -39,9 +38,9 @@ public class RefreshTokenService {
         return refreshSessionRepository.save(refreshSession);
     }
 
-    public int getExpTime(String fingerprint) {
+    public long getExpTime(String fingerprint) {
         RefreshSession refreshSession = refreshSessionRepository.findRefreshSessionByFingerprint(fingerprint);
-        return (int) ((refreshSession.getExpiresIn().getTime() - (Timestamp.from(Instant.now()).getTime())) / 1000);
+        return ((refreshSession.getExpiresIn().getTime() - (Timestamp.from(Instant.now()).getTime())) / 1000);
     }
 
     public Long validateToken(String token, String fingerprint) {
