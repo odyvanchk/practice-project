@@ -11,14 +11,16 @@ import com.practice.shop.model.user.UserRole;
 import com.practice.shop.repository.UserHasRoleRepository;
 import com.practice.shop.repository.UserRoleRepository;
 import com.practice.shop.service.AuthService;
+import com.practice.shop.service.EmailService;
 import com.practice.shop.service.UserService;
-import com.practice.shop.web.controller.security.jwt.AccessTokenService;
-import com.practice.shop.web.controller.security.jwt.RefreshTokenService;
+import com.practice.shop.web.controller.security.AccessTokenService;
+import com.practice.shop.web.controller.security.RefreshTokenService;
 import com.practice.shop.web.dto.UserDto;
 import com.practice.shop.web.mappers.UserMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +35,9 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final UserMapper userMapper;
     List<UserRole> userRoles;
+    private final EmailService emailService;
 
-    public AuthServiceImpl(UserService userService, UserHasRoleRepository userHasRoleRepository, PasswordEncoder passwordEncoder, AccessTokenService accessTokenService, RefreshTokenService refreshTokenService, UserRoleRepository userRoleRepository, UserMapper userMapper) {
+    public AuthServiceImpl(UserService userService, UserHasRoleRepository userHasRoleRepository, PasswordEncoder passwordEncoder, AccessTokenService accessTokenService, RefreshTokenService refreshTokenService, UserRoleRepository userRoleRepository, UserMapper userMapper, EmailService emailService) {
         this.userService = userService;
         this.userHasRoleRepository = userHasRoleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -42,13 +45,15 @@ public class AuthServiceImpl implements AuthService {
         this.refreshTokenService = refreshTokenService;
         this.userRoles = userRoleRepository.findAll();
         this.userMapper = userMapper;
+        this.emailService = emailService;
     }
 
+    @SneakyThrows
     @Override
     @Transactional
     public UserDto registerUser(UserDto user) {
         if (userService.isExistByEmail(user.getEmail())) {
-            throw new EntityAlreadyExistsException(user.getEmail());
+            throw new EntityAlreadyExistsException("User with this email: " + user.getEmail() + " already exists ");
         }
         if (!user.isStudent() && !user.isTeacher()) {
             throw new UserHasNoRolesException();
@@ -58,6 +63,7 @@ public class AuthServiceImpl implements AuthService {
         saveUserRoles(user, newUser.getId());
 
         userMapper.updateUserDto(user, newUser);
+        emailService.sendConfirmEmail(user.getEmail(),"confirm registration", "click");
         return user;
     }
 
@@ -68,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailIsNotConfirmedException();
         }
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            Map<String, String> map = getAccessRefreshTokens(user.getEmail(), user.getFingerprint(), foundUser.getId());
+            Map<String, String> map = getAccessRefreshTokens(user.getEmail(), foundUser.getId());
             AuthEntity auth = new AuthEntity();
             auth.setId(foundUser.getId());
             auth.setRoles(foundUser.getUserRoles());
@@ -83,10 +89,10 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public AuthEntity loginWithRefreshToken(String token, String fingerprint) {
-        Long userId = refreshTokenService.validateToken(token, fingerprint);
+    public AuthEntity loginWithRefreshToken(String token, Long id) {
+        Long userId = refreshTokenService.validateToken(token, id);
         User user = userService.findById(userId);
-        Map<String, String> map = getAccessRefreshTokens(user.getEmail(), fingerprint, user.getId());
+        Map<String, String> map = getAccessRefreshTokens(user.getEmail(), user.getId());
         AuthEntity auth = new AuthEntity();
         auth.setId(user.getId());
         auth.setRoles(user.getUserRoles());
@@ -106,13 +112,13 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    private Map<String, String> getAccessRefreshTokens(String email, String fingerprint, Long userId) {
+    private Map<String, String> getAccessRefreshTokens(String email, Long userId) {
         Map<String, String> tokens = new HashMap<>(3);
         User user = userService.findByEmail(email);
         String accessToken = accessTokenService.generateAccessTokenByEmail(user);
         tokens.put("access", accessToken);
         tokens.put("accessExpTime", accessTokenService.getExpirationTime(accessToken).toString());
-        tokens.put("refresh", refreshTokenService.generateAndSaveRefreshToken(fingerprint, userId).getToken());
+        tokens.put("refresh", refreshTokenService.generateAndSaveRefreshToken(userId).getToken());
         return tokens;
     }
 

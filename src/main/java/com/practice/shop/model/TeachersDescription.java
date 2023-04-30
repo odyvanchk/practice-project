@@ -6,7 +6,6 @@ import com.practice.shop.model.user.UsersCountry;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +30,6 @@ public class TeachersDescription {
     @JoinColumn(name = "id_teacher")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country")
     private UsersCountry country;
     private Integer experience;
     private String description;
@@ -56,8 +53,6 @@ public class TeachersDescription {
     @BatchSize(size = 5)
     private Set<Schedule> schedules = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "bannedUser")
-    private List<BlackList> blackLists;
 
     @Override
     public String toString() {

@@ -2,6 +2,7 @@ package com.practice.shop.web.controller;
 
 import com.practice.shop.model.exception.EmailIsNotConfirmedException;
 import com.practice.shop.model.exception.EntityAlreadyExistsException;
+import com.practice.shop.model.exception.IllegalOperationException;
 import com.practice.shop.model.exception.InvalidRefreshTokenException;
 import com.practice.shop.model.exception.UserHasNoRolesException;
 import com.practice.shop.model.exception.UserNotFoundException;
@@ -20,7 +21,8 @@ import org.springframework.web.context.request.WebRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class, EmailIsNotConfirmedException.class, IllegalArgumentException.class})
+    @ExceptionHandler({UserHasNoRolesException.class, EntityAlreadyExistsException.class,
+            EmailIsNotConfirmedException.class, IllegalArgumentException.class, IllegalOperationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorTransfer handleCustomException(RuntimeException ex, WebRequest request) {

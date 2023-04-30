@@ -9,5 +9,5 @@ public interface AuthService {
 
     AuthEntity login(UserDto user);
 
-    AuthEntity loginWithRefreshToken(String token, String fingerprint);
+    AuthEntity loginWithRefreshToken(String token, Long id);
 }

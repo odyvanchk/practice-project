@@ -4,7 +4,6 @@ import com.practice.shop.model.Language;
 import com.practice.shop.model.LanguageLevel;
 import com.practice.shop.model.user.UsersCountry;
 import java.math.BigDecimal;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TeachersDescriptionCriteriaDto {
 
-    private Set<UsersCountry> countries;
+    private UsersCountry country;
     private Integer experienceFrom;
     private Integer experienceTo;
     private Boolean isNative;

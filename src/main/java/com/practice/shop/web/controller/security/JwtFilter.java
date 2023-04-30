@@ -1,7 +1,7 @@
-package com.practice.shop.web.controller.security.jwt;
+package com.practice.shop.web.controller.security;
 
-import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetails;
-import com.practice.shop.web.controller.security.jwt.userdetails.CustomUserDetailsService;
+import com.practice.shop.web.controller.security.userdetails.CustomUserDetails;
+import com.practice.shop.web.controller.security.userdetails.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

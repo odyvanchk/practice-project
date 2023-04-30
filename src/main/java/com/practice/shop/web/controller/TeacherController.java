@@ -3,6 +3,7 @@ package com.practice.shop.web.controller;
 import com.practice.shop.model.TchDescriptionResultList;
 import com.practice.shop.model.TeachersDescription;
 import com.practice.shop.model.TeachersDescriptionCriteria;
+import com.practice.shop.model.lesson.Lesson;
 import com.practice.shop.service.SearchLessonService;
 import com.practice.shop.service.TeacherService;
 import com.practice.shop.web.dto.TchDescriptionResultListDto;
@@ -11,6 +12,7 @@ import com.practice.shop.web.dto.TeachersDescriptionDto;
 import com.practice.shop.web.mappers.TchDescriptionResultListMapper;
 import com.practice.shop.web.mappers.TeachersCriteriaMapper;
 import com.practice.shop.web.mappers.TeachersDescriptionMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +44,7 @@ public class TeacherController {
         return descriptionListMapper.entityToDto(teachersDescriptions);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeachersDescriptionDto fillInfo(@ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
         var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
@@ -49,17 +52,24 @@ public class TeacherController {
         return descriptionMapper.entityToDto(teacherInfo);
     }
 
-    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public TeachersDescriptionDto updateInfo(@PathVariable Long id, @ModelAttribute TeachersDescriptionDto teachersDescriptionDto) {
-        var teacherInfo = descriptionMapper.dtoToEntity(teachersDescriptionDto);
-        teacherService.update(teachersDescriptionDto.getImage(), teacherInfo);
-        return descriptionMapper.entityToDto(teacherInfo);
-    }
-
     @GetMapping(value = "/{id}")
     public TeachersDescriptionDto getInfo(@PathVariable Long id) {
         TeachersDescription descriptionDto = teacherService.get(id);
         return descriptionMapper.entityToDto(descriptionDto);
+    }
+
+    @GetMapping("/{teacherId}/lessons/future")
+    @PreAuthorize("hasRole('TEACHER')")
+    //todo add expression that student can cancell only his lesson
+    public List<Lesson> getFutureLessons (@PathVariable Long teacherId, @RequestParam(defaultValue = "0", required = false) int page) {
+       return teacherService.findFutureLessons(teacherId, page);
+    }
+
+    @GetMapping("/{teacherId}/lessons/past")
+    @PreAuthorize("hasRole('TEACHER')")
+    //todo add expression that student can cancell only his lesson
+    public List<Lesson> getPastLessons (@PathVariable Long teacherId, @RequestParam(defaultValue = "0", required = false) int page) {
+        return teacherService.findPastLessons(teacherId, page);
     }
 
 }

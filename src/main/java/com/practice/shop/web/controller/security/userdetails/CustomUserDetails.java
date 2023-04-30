@@ -1,4 +1,4 @@
-package com.practice.shop.web.controller.security.jwt.userdetails;
+package com.practice.shop.web.controller.security.userdetails;
 
 import java.util.Collection;
 import lombok.Data;

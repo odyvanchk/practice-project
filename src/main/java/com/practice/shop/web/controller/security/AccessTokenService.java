@@ -1,4 +1,4 @@
-package com.practice.shop.web.controller.security.jwt;
+package com.practice.shop.web.controller.security;
 
 import com.practice.shop.model.user.User;
 import io.jsonwebtoken.Claims;

@@ -1,7 +1,7 @@
 package com.practice.shop.web.controller.config;
 
 
-import com.practice.shop.web.controller.security.jwt.JwtFilter;
+import com.practice.shop.web.controller.security.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.List;
@@ -48,7 +48,6 @@ public class WebSecurityConfig {
                 })
                 .and()
                 .addFilterAfter(jwtFilter, ExceptionTranslationFilter.class)
-//                .addFilterBefore(exceptionHandlerFilter, JwtFilter.class)
                 .build();
     }
 

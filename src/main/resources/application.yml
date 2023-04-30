@@ -21,8 +21,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: curiosity.english.courses@gmail.com
-    password: vebgnxxvwcuqvtfb
+    username: foreign.languages.diplom@gmail.com
+    password: lbjnblsfhbyshiqo
     properties:
       mail:
         smtp:

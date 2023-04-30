@@ -34,7 +34,5 @@ public class UserDto {
     @JsonProperty("isStudent")
     private boolean isStudent;
 
-    @Null(groups = onSearchTeacher.class)
-    private String fingerprint;
 
 }
