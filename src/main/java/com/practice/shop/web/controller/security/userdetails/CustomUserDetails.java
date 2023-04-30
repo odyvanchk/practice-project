@@ -1,10 +1,9 @@
-package com.practice.shop.web.controller.security.jwt.userdetails;
+package com.practice.shop.web.controller.security.userdetails;
 
+import java.util.Collection;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 
 @Data
 public class CustomUserDetails implements UserDetails {

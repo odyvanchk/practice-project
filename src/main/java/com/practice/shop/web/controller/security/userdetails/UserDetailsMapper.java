@@ -1,13 +1,12 @@
-package com.practice.shop.web.controller.security.jwt.userdetails;
+package com.practice.shop.web.controller.security.userdetails;
 
 import com.practice.shop.model.user.User;
 import com.practice.shop.repository.UserHasRoleRepository;
+import java.util.Collection;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 @Component
 @AllArgsConstructor

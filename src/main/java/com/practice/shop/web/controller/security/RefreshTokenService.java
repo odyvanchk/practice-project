@@ -1,17 +1,16 @@
-package com.practice.shop.web.controller.security.jwt;
+package com.practice.shop.web.controller.security;
 
-import com.practice.shop.repository.RefreshSessionRepository;
-import com.practice.shop.model.user.RefreshSession;
 import com.practice.shop.model.exception.InvalidRefreshTokenException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
+import com.practice.shop.model.user.RefreshSession;
+import com.practice.shop.repository.RefreshSessionRepository;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RefreshTokenService {
@@ -25,8 +24,8 @@ public class RefreshTokenService {
         this.refreshSessionRepository = refreshSessionRepository;
     }
 
-    public RefreshSession generateAndSaveRefreshToken(String fingerprint, Long id) {
-        RefreshSession refreshSession = refreshSessionRepository.findRefreshSessionByFingerprint(fingerprint);
+    public RefreshSession generateAndSaveRefreshToken(Long id) {
+        RefreshSession refreshSession = refreshSessionRepository.findByUserId(id);
         if (refreshSession == null) {
             refreshSession = new RefreshSession();
         }
@@ -34,18 +33,18 @@ public class RefreshTokenService {
         refreshSession.setCreatedAt(Timestamp.from(Instant.now().atZone(ZoneId.of("Etc/UTC")).toInstant()));
         refreshSession.setUserId(id);
         refreshSession.setExpiresIn(Timestamp.from(LocalDateTime.now().plusDays(expTime).atZone(ZoneId.of("Etc/UTC")).toInstant()));
-        refreshSession.setFingerprint(fingerprint);
+        refreshSession.setFingerprint("fingerprint");
 
         return refreshSessionRepository.save(refreshSession);
     }
 
-    public int getExpTime(String fingerprint) {
-        RefreshSession refreshSession = refreshSessionRepository.findRefreshSessionByFingerprint(fingerprint);
-        return (int) ((refreshSession.getExpiresIn().getTime() - (Timestamp.from(Instant.now()).getTime())) / 1000);
+    public long getExpTime(String refresh) {
+        RefreshSession refreshSession = refreshSessionRepository.findByToken(refresh);
+        return ((refreshSession.getExpiresIn().getTime() - (Timestamp.from(Instant.now()).getTime())) / 1000);
     }
 
-    public Long validateToken(String token, String fingerprint) {
-        RefreshSession session = refreshSessionRepository.findRefreshSessionByFingerprint(fingerprint);
+    public Long validateToken(String token, Long id) {
+        RefreshSession session = refreshSessionRepository.findByUserId(id);
         if (session == null || !Objects.equals(session.getToken(), token) || session.getExpiresIn().before(Timestamp.from(Instant.now()))) {
             if (session != null) {
                 refreshSessionRepository.delete(session);

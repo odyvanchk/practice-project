@@ -4,6 +4,7 @@ public enum LessonsStatus {
 
     BOOKED,
     DONE,
-    CANCELLED
+    CANCELLED_BY_TEACHER,
+    CANCELLED_BY_STUDENT
 
 }

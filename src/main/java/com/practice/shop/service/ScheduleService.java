@@ -1,5 +1,7 @@
 package com.practice.shop.service;
 
+import com.practice.shop.model.RangeTime;
+import com.practice.shop.model.lesson.Lesson;
 import com.practice.shop.model.schedule.Schedule;
 import com.practice.shop.web.dto.ScheduleDto;
 import java.util.List;
@@ -11,5 +13,9 @@ import java.util.List;
 public interface ScheduleService {
 
     List<Schedule> save(Long id, ScheduleDto scheduleDto);
+
+    List<Schedule> get(Long id, RangeTime rangeDto);
+
+    List<Lesson> book(Long teacherId, List<Long> scheduleArray);
 
 }

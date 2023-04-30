@@ -1,15 +1,11 @@
 package com.practice.shop;
 
-import com.practice.shop.model.Language;
-
+import java.util.Objects;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.io.ClassPathResource;
-
-import java.util.Objects;
 
 @Configuration
 public class ApplicationConfig {

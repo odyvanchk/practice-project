@@ -1,15 +1,13 @@
 package com.practice.shop.model.user;
 
 import jakarta.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 
 @Data

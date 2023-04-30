@@ -1,16 +1,15 @@
-package com.practice.shop.web.controller.security.jwt;
+package com.practice.shop.web.controller.security;
 
 import com.practice.shop.model.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class AccessTokenService {
@@ -39,7 +38,6 @@ public class AccessTokenService {
 
     public Long getExpirationTime(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        System.out.println(claims.getSubject());
         return claims.getExpiration().getTime();
     }
 

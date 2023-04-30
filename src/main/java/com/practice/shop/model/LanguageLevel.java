@@ -1,7 +1,5 @@
 package com.practice.shop.model;
 
-import java.util.Arrays;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 /**

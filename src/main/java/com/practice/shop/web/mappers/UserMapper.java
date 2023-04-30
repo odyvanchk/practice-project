@@ -1,10 +1,13 @@
 package com.practice.shop.web.mappers;
 
+import com.practice.shop.model.user.User;
 import com.practice.shop.repository.UserHasRoleRepository;
 import com.practice.shop.web.dto.UserDto;
-import com.practice.shop.model.user.User;
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Context;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

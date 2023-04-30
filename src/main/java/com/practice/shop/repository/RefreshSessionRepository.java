@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RefreshSessionRepository extends JpaRepository<RefreshSession, Long> {
+
+    RefreshSession findByToken(String token);
+
+    RefreshSession findByUserId(Long userId);
     RefreshSession findRefreshSessionByFingerprint(String fingerprint);
 
 }
