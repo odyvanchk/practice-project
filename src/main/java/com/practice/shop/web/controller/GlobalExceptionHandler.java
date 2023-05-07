@@ -5,7 +5,7 @@ import com.practice.shop.model.exception.EntityAlreadyExistsException;
 import com.practice.shop.model.exception.IllegalOperationException;
 import com.practice.shop.model.exception.InvalidRefreshTokenException;
 import com.practice.shop.model.exception.UserHasNoRolesException;
-import com.practice.shop.model.exception.UserNotFoundException;
+import com.practice.shop.model.exception.EntityNotFoundException;
 import com.practice.shop.model.exception.WrongPasswordException;
 import com.practice.shop.web.dto.ErrorTransfer;
 import org.springframework.http.HttpStatus;
@@ -29,10 +29,10 @@ public class GlobalExceptionHandler {
         return new ErrorTransfer(ex.getMessage());
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorTransfer handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+    public ErrorTransfer handleUserNotFoundException(EntityNotFoundException ex, WebRequest request) {
         return new ErrorTransfer(ex.getMessage());
     }
 

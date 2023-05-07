@@ -1,6 +1,7 @@
 package com.practice.shop.web.controller;
 
 import com.practice.shop.model.lesson.Lesson;
+import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.service.StudentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,24 @@ public class StudentController {
     @GetMapping("/{studentId}/lessons/future")
     @PreAuthorize("hasRole('STUDENT')")
     //todo add expression that student can cancell only his lesson
-    public List<Lesson> getFutureLessons (@PathVariable Long studentId, @RequestParam(defaultValue = "0", required = false) int page) {
+    public LessonResultList getFutureLessons (@PathVariable Long studentId,
+                                          @RequestParam(defaultValue = "0", required = false) int page) {
         return studentService.findFutureLessons(studentId, page);
     }
 
     @GetMapping("/{studentId}/lessons/past")
     @PreAuthorize("hasRole('STUDENT')")
     //todo add expression that student can cancell only his lesson
-    public List<Lesson> getPastLessons (@PathVariable Long studentId, @RequestParam(defaultValue = "0", required = false) int page) {
+    public LessonResultList getPastLessons (@PathVariable Long studentId,
+                                            @RequestParam(defaultValue = "0", required = false) int page) {
         return studentService.findPastLessons(studentId, page);
+    }
+
+    @PostMapping("/{studentId}/lessons/{lessonId}/note")
+    @PreAuthorize("hasRole('STUDENT')")
+    //todo add expression that student can cancell only his lesson
+    public Lesson addNoteToLesson (@PathVariable Long studentId, @PathVariable Long lessonId,
+                                         @RequestBody String note) {
+        return studentService.addNote(lessonId, note);
     }
 }

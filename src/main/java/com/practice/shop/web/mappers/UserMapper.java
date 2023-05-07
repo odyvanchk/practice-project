@@ -13,7 +13,6 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     @Mapping(target = "password", expression = "java(null)")
-    @Mapping(target = "fingerprint", expression = "java(null)")
     UserDto userToUserDto(User user, @Context UserHasRoleRepository repository);
 
     @AfterMapping

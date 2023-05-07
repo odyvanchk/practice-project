@@ -5,7 +5,11 @@ import com.practice.shop.service.LessonService;
 import com.practice.shop.web.mappers.LessonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +30,10 @@ public class LessonController {
 //        return lessonMapper.toDto(lesson);
 //    }
 
-    @PostMapping("/cancelByTeacher")
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{lessonId}/cancelByTeacher")
+    @PreAuthorize("hasRole('TEACHER')")
     //todo add expression that student can cancell only his lesson
-    public void cancel(@RequestParam Long lessonId) {
+    public void cancel(@PathVariable Long lessonId) {
         lessonService.cancelByTeacher(lessonId);
     }
 

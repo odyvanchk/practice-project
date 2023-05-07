@@ -1,13 +1,12 @@
 package com.practice.shop.service.impl;
 
 import com.practice.shop.model.TeachersDescription;
-import com.practice.shop.model.exception.UserNotFoundException;
-import com.practice.shop.model.lesson.Lesson;
+import com.practice.shop.model.exception.EntityNotFoundException;
+import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.repository.TchDescnRepository;
 import com.practice.shop.service.LessonService;
 import com.practice.shop.service.StorageService;
 import com.practice.shop.service.TeacherService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +33,16 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeachersDescription get(Long id) {
         return tchDescnRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("teacher isn`t found"));
     }
 
     @Override
-    public List<Lesson> findFutureLessons(Long teacherId, int page) {
+    public LessonResultList findFutureLessons(Long teacherId, int page) {
         return lessonService.findFutureByTeacherId(teacherId, page);
     }
 
     @Override
-    public List<Lesson> findPastLessons(Long teacherId, int page) {
+    public LessonResultList findPastLessons(Long teacherId, int page) {
         return lessonService.findPastByTeacherId(teacherId, page);
     }
 

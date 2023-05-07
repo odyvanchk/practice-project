@@ -1,6 +1,6 @@
 package com.practice.shop.service.impl;
 
-import com.practice.shop.model.exception.UserNotFoundException;
+import com.practice.shop.model.exception.EntityNotFoundException;
 import com.practice.shop.model.user.User;
 import com.practice.shop.repository.UserRepository;
 import com.practice.shop.service.UserService;
@@ -21,13 +21,15 @@ public class UserServiceImpl implements UserService {
 
     public User findByEmail(String email) {
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("User with email" + email + " doesn`t exist")
+                );
     }
 
     @Override
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User doesn`t exist"));
     }
 
     @Override
