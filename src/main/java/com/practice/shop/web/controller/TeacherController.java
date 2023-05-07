@@ -4,6 +4,7 @@ import com.practice.shop.model.TchDescriptionResultList;
 import com.practice.shop.model.TeachersDescription;
 import com.practice.shop.model.TeachersDescriptionCriteria;
 import com.practice.shop.model.lesson.Lesson;
+import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.service.SearchLessonService;
 import com.practice.shop.service.TeacherService;
 import com.practice.shop.web.dto.TchDescriptionResultListDto;
@@ -38,7 +39,8 @@ public class TeacherController {
 
     @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER')")
     @GetMapping("/search")
-    public TchDescriptionResultListDto retrieveTeacherList(TeachersDescriptionCriteriaDto criteriaDto, @RequestParam(defaultValue = "0", required = false) Long page) {
+    public TchDescriptionResultListDto retrieveTeacherList(TeachersDescriptionCriteriaDto criteriaDto,
+                                                           @RequestParam(defaultValue = "0", required = false) Long page) {
         TeachersDescriptionCriteria criteria = criteriaMapper.dtoToEntity(criteriaDto);
         TchDescriptionResultList teachersDescriptions = searchLessonService.searchByParams(criteria, page);
         return descriptionListMapper.entityToDto(teachersDescriptions);
@@ -61,14 +63,16 @@ public class TeacherController {
     @GetMapping("/{teacherId}/lessons/future")
     @PreAuthorize("hasRole('TEACHER')")
     //todo add expression that student can cancell only his lesson
-    public List<Lesson> getFutureLessons (@PathVariable Long teacherId, @RequestParam(defaultValue = "0", required = false) int page) {
+    public LessonResultList getFutureLessons (@PathVariable Long teacherId,
+                                              @RequestParam(defaultValue = "0", required = false) int page) {
        return teacherService.findFutureLessons(teacherId, page);
     }
 
     @GetMapping("/{teacherId}/lessons/past")
     @PreAuthorize("hasRole('TEACHER')")
     //todo add expression that student can cancell only his lesson
-    public List<Lesson> getPastLessons (@PathVariable Long teacherId, @RequestParam(defaultValue = "0", required = false) int page) {
+    public LessonResultList getPastLessons (@PathVariable Long teacherId,
+                                            @RequestParam(defaultValue = "0", required = false) int page) {
         return teacherService.findPastLessons(teacherId, page);
     }
 

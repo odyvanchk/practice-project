@@ -9,6 +9,18 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
+    @Query("select count(l) from Lesson l where l.idStudent = ?1 and l.dateTime < now()")
+    long countPastByIdStudent(Long idStudent);
+
+    @Query("select count(l) from Lesson l where l.idStudent = ?1 and l.dateTime > now()")
+    long countFutureByIdStudent(Long idStudent);
+
+    @Query("select count(l) from Lesson l where l.idTeacher = ?1 and l.dateTime < now()")
+    long countPastByIdTeacher(Long idTeacher);
+
+    @Query("select count(l) from Lesson l where l.idTeacher = ?1 and l.dateTime > now()")
+    long countFutureByIdTeacher(Long idTeacher);
+
     boolean existsByIdAndIdStudent(Long id, Long idStudent);
 
     boolean existsByIdTeacherAndId(Long idTeacher, Long id);

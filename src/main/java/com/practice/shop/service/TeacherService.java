@@ -1,8 +1,7 @@
 package com.practice.shop.service;
 
 import com.practice.shop.model.TeachersDescription;
-import com.practice.shop.model.lesson.Lesson;
-import java.util.List;
+import com.practice.shop.model.lesson.LessonResultList;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface TeacherService {
@@ -11,8 +10,8 @@ public interface TeacherService {
 
     TeachersDescription get(Long id);
 
-    List<Lesson> findFutureLessons(Long teacherId, int page);
+    LessonResultList findFutureLessons(Long teacherId, int page);
 
-    List<Lesson> findPastLessons(Long teacherId, int page);
+    LessonResultList findPastLessons(Long teacherId, int page);
 
 }

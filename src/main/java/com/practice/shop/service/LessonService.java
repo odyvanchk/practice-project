@@ -1,7 +1,7 @@
 package com.practice.shop.service;
 
 import com.practice.shop.model.lesson.Lesson;
-import java.util.List;
+import com.practice.shop.model.lesson.LessonResultList;
 
 public interface LessonService {
 
@@ -9,12 +9,15 @@ public interface LessonService {
 
     void cancelByStudent(Long lessonId);
 
-    List<Lesson> findFutureByTeacherId(Long id, int page);
+    LessonResultList findFutureByTeacherId(Long id, int page);
 
-    List<Lesson> findPastByTeacherId(Long id, int page);
+    LessonResultList findPastByTeacherId(Long id, int page);
 
-    List<Lesson> findPastByStudentId(Long studentId, int page);
+    LessonResultList findPastByStudentId(Long studentId, int page);
 
-    List<Lesson> findFutureByStudentId(Long studentId, int page);
+    LessonResultList findFutureByStudentId(Long studentId, int page);
 
+    Lesson findById(Long lessonId);
+
+    Lesson save(Lesson lesson);
 }

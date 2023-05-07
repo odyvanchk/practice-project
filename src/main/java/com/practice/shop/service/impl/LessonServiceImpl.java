@@ -1,13 +1,15 @@
 package com.practice.shop.service.impl;
 
 import com.practice.shop.model.exception.EntityAlreadyExistsException;
+import com.practice.shop.model.exception.EntityNotFoundException;
 import com.practice.shop.model.lesson.Lesson;
+import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.model.lesson.LessonsStatus;
 import com.practice.shop.repository.LessonRepository;
 import com.practice.shop.repository.ScheduleRepository;
+import com.practice.shop.service.EmailService;
 import com.practice.shop.service.LessonService;
 import com.practice.shop.web.controller.security.userdetails.CustomUserDetails;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,6 +25,7 @@ public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
     private final ScheduleRepository scheduleRepository;
+    private final EmailService emailService;
     private static final int PAGE_SIZE = 2;
 
     @Override
@@ -37,6 +40,7 @@ public class LessonServiceImpl implements LessonService {
         if (!lessonRepository.existsByIdTeacherAndId(userDetails.getId(), lessonId)) {
             throw new AccessDeniedException("access denied");
         }
+//        emailService
         lesson.setStatus(LessonsStatus.CANCELLED_BY_TEACHER);
         lessonRepository.save(lesson);
     }
@@ -59,49 +63,87 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<Lesson> findFutureByTeacherId(Long id, int page) {
-        return lessonRepository.findFutureByIdTeacher(id,
-                PageRequest.of(
-                        page,
-                        PAGE_SIZE,
-                        Sort.by("dateTime")
+    public LessonResultList findFutureByTeacherId(Long id, int page) {
+        var res = new LessonResultList();
+        res.setLessons(
+                lessonRepository.findFutureByIdTeacher(id,
+                        PageRequest.of(
+                                page,
+                                PAGE_SIZE,
+                                Sort.by("dateTime")
+                        )
                 )
         );
+        res.setPageSize(PAGE_SIZE);
+        res.setCurrentPage((long) page);
+        res.setTotalCount(lessonRepository.countFutureByIdTeacher(id));
+        return res;
     }
 
     @Override
-    public List<Lesson> findPastByTeacherId(Long id, int page) {
-        return lessonRepository.findPastByIdTeacher(id,
-                PageRequest.of(
+    public LessonResultList findPastByTeacherId(Long id, int page) {
+        var res = new LessonResultList();
+        res.setLessons(
+                lessonRepository.findPastByIdTeacher(id,
+                        PageRequest.of(
                         page,
                         PAGE_SIZE,
                         Sort.by("dateTime")
                                 .descending()
+                        )
                 )
         );
+        res.setPageSize(PAGE_SIZE);
+        res.setCurrentPage((long) page);
+        res.setTotalCount(lessonRepository.countPastByIdTeacher(id));
+        return res;
     }
 
     @Override
-    public List<Lesson> findPastByStudentId(Long studentId, int page) {
-        return lessonRepository.findPastByIdStudent(studentId,
-                PageRequest.of(
-                        page,
-                        PAGE_SIZE,
-                        Sort.by("dateTime")
-                                .descending()
+    public LessonResultList findPastByStudentId(Long studentId, int page) {
+        var res = new LessonResultList();
+        res.setLessons(
+                lessonRepository.findPastByIdStudent(studentId,
+                        PageRequest.of(
+                                page,
+                                PAGE_SIZE,
+                                Sort.by("dateTime")
+                                        .descending()
+                        )
                 )
         );
+        res.setPageSize(PAGE_SIZE);
+        res.setCurrentPage((long) page);
+        res.setTotalCount(lessonRepository.countPastByIdStudent(studentId));
+        return res;
     }
 
     @Override
-    public List<Lesson> findFutureByStudentId(Long studentId, int page) {
-        return lessonRepository.findFutureByIdTeacher(studentId,
-                PageRequest.of(
+    public LessonResultList findFutureByStudentId(Long studentId, int page) {
+        var res = new LessonResultList();
+        res.setLessons(
+                lessonRepository.findFutureByIdTeacher(studentId,
+                    PageRequest.of(
                         page,
                         PAGE_SIZE,
                         Sort.by("dateTime")
                 )
-        );
+        ));
+        res.setPageSize(PAGE_SIZE);
+        res.setCurrentPage((long) page);
+        res.setTotalCount(lessonRepository.countFutureByIdStudent(studentId));
+        return res;
+    }
+
+    @Override
+    public Lesson findById(Long lessonId) {
+        return lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new EntityNotFoundException("Lesson does not exist"));
+    }
+
+    @Override
+    public Lesson save(Lesson lesson) {
+        return lessonRepository.save(lesson);
     }
 
 }
