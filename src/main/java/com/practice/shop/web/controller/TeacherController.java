@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,7 +63,6 @@ public class TeacherController {
 
     @GetMapping("/{teacherId}/lessons/future")
     @PreAuthorize("hasRole('TEACHER')")
-    //todo add expression that student can cancell only his lesson
     public LessonResultList getFutureLessons (@PathVariable Long teacherId,
                                               @RequestParam(defaultValue = "0", required = false) int page) {
        return teacherService.findFutureLessons(teacherId, page);
@@ -70,10 +70,15 @@ public class TeacherController {
 
     @GetMapping("/{teacherId}/lessons/past")
     @PreAuthorize("hasRole('TEACHER')")
-    //todo add expression that student can cancell only his lesson
     public LessonResultList getPastLessons (@PathVariable Long teacherId,
                                             @RequestParam(defaultValue = "0", required = false) int page) {
         return teacherService.findPastLessons(teacherId, page);
+    }
+
+    @PostMapping("/{teacherId}/mark")
+    @PreAuthorize("hasRole('STUDENT')")
+    public void updateMark (@PathVariable Long teacherId, @RequestBody float mark) {
+        teacherService.updateMark(teacherId, mark);
     }
 
 }

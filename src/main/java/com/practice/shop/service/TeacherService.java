@@ -14,4 +14,6 @@ public interface TeacherService {
 
     LessonResultList findPastLessons(Long teacherId, int page);
 
+    void updateMark(Long teacherId, float mark);
+
 }

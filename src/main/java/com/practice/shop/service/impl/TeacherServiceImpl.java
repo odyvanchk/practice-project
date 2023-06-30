@@ -2,12 +2,16 @@ package com.practice.shop.service.impl;
 
 import com.practice.shop.model.TeachersDescription;
 import com.practice.shop.model.exception.EntityNotFoundException;
+import com.practice.shop.model.exception.IllegalOperationException;
 import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.repository.TchDescnRepository;
 import com.practice.shop.service.LessonService;
 import com.practice.shop.service.StorageService;
 import com.practice.shop.service.TeacherService;
+import com.practice.shop.web.controller.security.userdetails.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,5 +49,17 @@ public class TeacherServiceImpl implements TeacherService {
     public LessonResultList findPastLessons(Long teacherId, int page) {
         return lessonService.findPastByTeacherId(teacherId, page);
     }
+
+    @Override
+    public void updateMark(Long teacherId, float mark) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        if (!lessonService.existsByStudentAndTeacher(userDetails.getId(), teacherId)) {
+            throw new IllegalOperationException("you haven't lessons with this teacher");
+        }
+//        if ()
+        tchDescnRepository.calculateMark(teacherId.intValue(), mark);
+    }
+
 
 }

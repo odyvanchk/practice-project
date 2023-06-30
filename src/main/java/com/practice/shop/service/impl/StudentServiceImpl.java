@@ -48,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     public Lesson addNote(Long lessonId, String note) {
         var lesson = lessonService.findById(lessonId);
         lesson.setNote(note);
-        var teacher = userService.findById(lesson.getIdTeacher());
+        var teacher = userService.findById(lesson.getTeacher().getId());
         emailService.studentAddNote(lesson, teacher.getEmail(), "Note to lesson");
         return lessonService.save(lesson);
     }

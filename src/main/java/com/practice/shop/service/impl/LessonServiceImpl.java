@@ -5,10 +5,12 @@ import com.practice.shop.model.exception.EntityNotFoundException;
 import com.practice.shop.model.lesson.Lesson;
 import com.practice.shop.model.lesson.LessonResultList;
 import com.practice.shop.model.lesson.LessonsStatus;
+import com.practice.shop.model.user.User;
 import com.practice.shop.repository.LessonRepository;
 import com.practice.shop.repository.ScheduleRepository;
 import com.practice.shop.service.EmailService;
 import com.practice.shop.service.LessonService;
+import com.practice.shop.service.UserService;
 import com.practice.shop.web.controller.security.userdetails.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
     private final ScheduleRepository scheduleRepository;
     private final EmailService emailService;
+    private final UserService userService;
     private static final int PAGE_SIZE = 2;
 
     @Override
@@ -37,12 +40,13 @@ public class LessonServiceImpl implements LessonService {
                 );
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (!lessonRepository.existsByIdTeacherAndId(userDetails.getId(), lessonId)) {
+        if (!lessonRepository.existsByTeacherIdAndId(userDetails.getId(), lessonId)) {
             throw new AccessDeniedException("access denied");
         }
-//        emailService
         lesson.setStatus(LessonsStatus.CANCELLED_BY_TEACHER);
         lessonRepository.save(lesson);
+        User student = userService.findById(lesson.getStudent().getId());
+        emailService.cancelByTeacher(lesson, student.getEmail(), "lesson cancellation");
     }
 
     @Override
@@ -54,12 +58,14 @@ public class LessonServiceImpl implements LessonService {
                 );
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (!lessonRepository.existsByIdAndIdStudent(lessonId, userDetails.getId())) {
+        if (!lessonRepository.existsByIdAndStudentId(lessonId, userDetails.getId())) {
             throw new AccessDeniedException("access denied");
         }
         lesson.setStatus(LessonsStatus.CANCELLED_BY_STUDENT);
         scheduleRepository.updateIsAvailableById(lesson.getSchedule().getId());
         lessonRepository.save(lesson);
+        User teacher = userService.findById(lesson.getTeacher().getId());
+        emailService.cancelByStudent(lesson, teacher.getEmail(), "lesson cancellation");
     }
 
     @Override
@@ -122,7 +128,7 @@ public class LessonServiceImpl implements LessonService {
     public LessonResultList findFutureByStudentId(Long studentId, int page) {
         var res = new LessonResultList();
         res.setLessons(
-                lessonRepository.findFutureByIdTeacher(studentId,
+                lessonRepository.findFutureByIdStudent(studentId,
                     PageRequest.of(
                         page,
                         PAGE_SIZE,
@@ -144,6 +150,11 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson save(Lesson lesson) {
         return lessonRepository.save(lesson);
+    }
+
+    @Override
+    public boolean existsByStudentAndTeacher(Long studentId, Long teacherId) {
+        return lessonRepository.existsByStudentIdAndTeacherId(studentId, teacherId);
     }
 
 }

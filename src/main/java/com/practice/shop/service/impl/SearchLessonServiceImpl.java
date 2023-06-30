@@ -74,11 +74,6 @@ public class SearchLessonServiceImpl implements SearchLessonService {
             predicates.add(cb.equal(root.get(TeachersDescription_.isNative), criteria.getIsNative()));
         }
         if (criteria.getCountry() != null) {
-//            CriteriaBuilder.In<UsersCountry> integerIn = cb.in(root.get(TeachersDescription_.country));
-//            criteria.getCountries().forEach(
-//                    integerIn::value
-//            );
-
             predicates.add(cb.equal(root.get(TeachersDescription_.country), criteria.getCountry()));
         }
         if (criteria.getDefaultPriceFrom() != null) {

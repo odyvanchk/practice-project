@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-        String htmlMsg = "<p>Student " + userDetails.getUsername() + " left note to lesson " +
+        String htmlMsg = "<p>Student " + userDetails.getUsername() + "has left note to lesson " +
                 " " + lesson.getDateTime() + "</p>" +
                 "<p> " + lesson.getNote() + "</p>";
         message.setContent(htmlMsg, "text/html");
@@ -49,5 +49,34 @@ public class EmailServiceImpl implements EmailService {
         helper.setSubject(subject);
         mailSender.send(message);
     }
+    @SneakyThrows
+    @Override
+    public void cancelByTeacher(Lesson lesson, String to, String subject) {
+        MimeMessage message = mailSender.createMimeMessage();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+        String htmlMsg = "<p>Teacher " + userDetails.getUsername() + "has cancelled lesson " +
+                " " + lesson.getDateTime() + "</p>" ;
+        message.setContent(htmlMsg, "text/html");
+        helper.setTo(to);
+        helper.setSubject(subject);
+        mailSender.send(message);
+    }
 
+
+    @SneakyThrows
+    @Override
+    public void cancelByStudent(Lesson lesson, String to, String subject) {
+        MimeMessage message = mailSender.createMimeMessage();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+        String htmlMsg = "<p>Student " + userDetails.getUsername() + "has cancelled lesson " +
+                " " + lesson.getDateTime() + "</p>" ;
+        message.setContent(htmlMsg, "text/html");
+        helper.setTo(to);
+        helper.setSubject(subject);
+        mailSender.send(message);
+    }
 }
