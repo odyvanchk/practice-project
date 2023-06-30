@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BlackListRepository extends JpaRepository<BlackList, BlackListPK> {
 
-    boolean existsByPk_UserId(Long userId);
-
 }

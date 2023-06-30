@@ -20,4 +20,7 @@ public interface LessonService {
     Lesson findById(Long lessonId);
 
     Lesson save(Lesson lesson);
+
+    boolean existsByStudentAndTeacher(Long id, Long teacherId);
+
 }

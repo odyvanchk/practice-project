@@ -61,16 +61,4 @@ public class AuthController {
         return "email is confirmed. You can close the window.";
     }
 
-
-    @PreAuthorize("hasRole('STUDENT')")
-    @GetMapping("/lessons/student")
-    public String testStudent() throws JSONException {
-        return (new JSONObject()).put("txt", "hello, stud").toString();    }
-
-    @PreAuthorize(" hasRole('TEACHER')")
-    @GetMapping("/lessons/teacher")
-    public String testTeacher() throws JSONException {
-        return (new JSONObject()).put("txt", "hello, Teacher").toString();
-    }
-
 }

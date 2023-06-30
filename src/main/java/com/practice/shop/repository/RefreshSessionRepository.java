@@ -10,6 +10,5 @@ public interface RefreshSessionRepository extends JpaRepository<RefreshSession, 
     RefreshSession findByToken(String token);
 
     RefreshSession findByUserId(Long userId);
-    RefreshSession findRefreshSessionByFingerprint(String fingerprint);
 
 }

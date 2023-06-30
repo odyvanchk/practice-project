@@ -18,8 +18,4 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findByIdTeacherAndDateTimeStartGreaterThanEqualAndDateTimeStartLessThanEqual(Long idTeacher, LocalDateTime dateTimeStart, LocalDateTime dateTimeStart1, Sort sort);
 
-    @Transactional
-    @Modifying
-    @Query("update Schedule s set s.isAvailable = ?1 where s.isAvailable = false")
-    int updateIsAvailableByIsAvailableFalse(boolean isAvailable);
 }

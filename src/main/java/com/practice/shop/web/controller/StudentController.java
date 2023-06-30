@@ -33,7 +33,6 @@ public class StudentController {
 
     @GetMapping("/{studentId}/lessons/future")
     @PreAuthorize("hasRole('STUDENT')")
-    //todo add expression that student can cancell only his lesson
     public LessonResultList getFutureLessons (@PathVariable Long studentId,
                                           @RequestParam(defaultValue = "0", required = false) int page) {
         return studentService.findFutureLessons(studentId, page);
@@ -41,7 +40,6 @@ public class StudentController {
 
     @GetMapping("/{studentId}/lessons/past")
     @PreAuthorize("hasRole('STUDENT')")
-    //todo add expression that student can cancell only his lesson
     public LessonResultList getPastLessons (@PathVariable Long studentId,
                                             @RequestParam(defaultValue = "0", required = false) int page) {
         return studentService.findPastLessons(studentId, page);
@@ -49,9 +47,9 @@ public class StudentController {
 
     @PostMapping("/{studentId}/lessons/{lessonId}/note")
     @PreAuthorize("hasRole('STUDENT')")
-    //todo add expression that student can cancell only his lesson
     public Lesson addNoteToLesson (@PathVariable Long studentId, @PathVariable Long lessonId,
                                          @RequestBody String note) {
         return studentService.addNote(lessonId, note);
     }
+
 }

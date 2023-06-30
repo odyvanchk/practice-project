@@ -6,6 +6,7 @@ import com.practice.shop.model.lesson.Lesson;
 import com.practice.shop.model.lesson.LessonsStatus;
 import com.practice.shop.model.schedule.Command;
 import com.practice.shop.model.schedule.Schedule;
+import com.practice.shop.model.user.User;
 import com.practice.shop.repository.LessonRepository;
 import com.practice.shop.repository.ScheduleRepository;
 import com.practice.shop.service.ScheduleService;
@@ -74,8 +75,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 throw new IllegalOperationException("sorry, this lesson has already booked");
             }
             Lesson newLesson = new Lesson();
-            newLesson.setIdStudent(userDetails.getId());
-            newLesson.setIdTeacher(lessonSchedule.getIdTeacher());
+            newLesson.setStudent(new User(userDetails.getId()));
+            newLesson.setTeacher(new User(lessonSchedule.getIdTeacher()));
             newLesson.setDateTime(lessonSchedule.getDateTimeStart());
             newLesson.setStatus(LessonsStatus.BOOKED);
             newLesson.setSchedule(lessonSchedule);

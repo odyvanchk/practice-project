@@ -36,7 +36,6 @@ public class TeacherScheduleController {
     @PostMapping(value = "/{id}")
     @PreAuthorize("hasRole('TEACHER')")
     public List<Schedule> save (@PathVariable Long id, @RequestBody ScheduleDto scheduleDto) {
-        //todo check that teacher not the same student
         return scheduleService.save(id, scheduleDto);
     }
 
